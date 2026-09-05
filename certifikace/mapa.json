@@ -1,0 +1,87 @@
+{
+ "Certificate Python Basic (1) Jan Černý. (1)": {
+  "slug": "certificate-python-basic-1-jan-cerny-1",
+  "sirka": 595,
+  "vyska": 842
+ },
+ "Certifikat_Best_practices_pro_navrh_softwaru (1)": {
+  "slug": "certifikat-best-practices-pro-navrh-softwaru-1",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Git (1)": {
+  "slug": "certifikat-git-1",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Kolekce_v_Pythonu": {
+  "slug": "certifikat-kolekce-v-pythonu",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Moderni_webdesign": {
+  "slug": "certifikat-moderni-webdesign",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_NumPy_-_Matematika_v_Pythonu (1)": {
+  "slug": "certifikat-numpy-matematika-v-pythonu-1",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Objektove_orientovane_programovani_v_Pythonu": {
+  "slug": "certifikat-objektove-orientovane-programovani-v-pythonu",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Pandas_-_Vizualizace_dat_v_Pythonu (1)": {
+  "slug": "certifikat-pandas-vizualizace-dat-v-pythonu-1",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_REST_API_v_Django_-_Filmova_databaze (1)": {
+  "slug": "certifikat-rest-api-v-django-filmova-databaze-1",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_SQLite_databaze_krok_za_krokem": {
+  "slug": "certifikat-sqlite-databaze-krok-za-krokem",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Zakladni_konstrukce_jazyka_JavaScript": {
+  "slug": "certifikat-zakladni-konstrukce-jazyka-javascript",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Zakladni_konstrukce_jazyka_Python": {
+  "slug": "certifikat-zakladni-konstrukce-jazyka-python",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Zaklady_Django_frameworku_pro_Python": {
+  "slug": "certifikat-zaklady-django-frameworku-pro-python",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Certifikat_Zaklady_React": {
+  "slug": "certifikat-zaklady-react",
+  "sirka": 842,
+  "vyska": 595
+ },
+ "Claude 101 Certifikát": {
+  "slug": "claude-101-certifikat",
+  "sirka": 792,
+  "vyska": 612
+ },
+ "Claude Code 101 Certifikát": {
+  "slug": "claude-code-101-certifikat",
+  "sirka": 792,
+  "vyska": 612
+ },
+ "Claude Code in Action Certifikát": {
+  "slug": "claude-code-in-action-certifikat",
+  "sirka": 792,
+  "vyska": 612
+ }
+}

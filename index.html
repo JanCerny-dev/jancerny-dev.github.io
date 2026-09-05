@@ -1,317 +1,1453 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="cs" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhDrasliku</title>
-    <link rel="icon" type="image/png" href="img/logo/logo.png">
-    <!-- klasické styl soubor -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- rozdělení odstavců pomocí grid -->
-    <link rel="stylesheet" href="others/grid.css"> 
-    <!-- GALERIE obrázky pomocí lightboxu -->
-    <link rel="stylesheet" href="css/lightbox.min.css" class="css">
-    <script src="js/lightbox-plus-jquery.min.js"></script>
-    <!-- responzivita vebu přes css (queris) -->
-    <link rel="stylesheet" href="css/queries.css">
-    <!-- funkce navigace po strance přes jquery z https://releases.jquery.com/ -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="js/script_jquery.js"></script>
-<!-- fonty z google fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jan Černý — Tester · Programátor · AI nadšenec</title>
+  <meta name="description" content="Osobní portfolio — QA testování, vývoj a AI projekty." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       DESIGN TOKENY — světlý (výchozí) a tmavý „terminál" režim
+       ══════════════════════════════════════════════════════════ */
+    :root {
+      --bg:          #f7f9fb;
+      --surface:     #ffffff;
+      --card:        #ffffff;
+      --border:      #e3e8ef;
+      --text:        #101820;
+      --muted:       #56626f;
+      --accent:      #0e7490;   /* kyanová — čitelná na světlém pozadí */
+      --accent-hi:   #0891b2;
+      --accent-soft: rgba(8, 145, 178, 0.10);
+      --accent-glow: rgba(8, 145, 178, 0.18);
+      --shadow:      0 1px 3px rgba(16, 24, 32, .06), 0 8px 24px rgba(16, 24, 32, .07);
+      --shadow-lg:   0 4px 12px rgba(16, 24, 32, .08), 0 16px 40px rgba(16, 24, 32, .10);
+      --font-head:   'Space Grotesk', sans-serif;
+      --font-body:   'Inter', sans-serif;
+      --font-mono:   'JetBrains Mono', monospace;
+      --radius:      14px;
+      --radius-sm:   8px;
+      --t:           220ms cubic-bezier(.4, 0, .2, 1);
+    }
+    [data-theme="dark"] {
+      --bg:          #0a0e13;
+      --surface:     #0e141b;
+      --card:        #111922;
+      --border:      #1d2936;
+      --text:        #d9e4ee;
+      --muted:       #8294a5;
+      --accent:      #2dd9f2;
+      --accent-hi:   #6ee7f9;
+      --accent-soft: rgba(45, 217, 242, 0.10);
+      --accent-glow: rgba(45, 217, 242, 0.28);
+      --shadow:      0 1px 3px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+      --shadow-lg:   0 4px 12px rgba(0, 0, 0, .5), 0 16px 48px rgba(0, 0, 0, .45);
+    }
 
+    /* ── Reset & základ ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      transition: background var(--t), color var(--t);
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 3px; border-radius: 4px; }
+
+    /* Tmavý režim: jemné „scanlines" přes celou stránku pro terminálový nádech */
+    [data-theme="dark"] body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px);
+    }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 96px 0; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-label::before { content: "~$ "; opacity: .6; }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(30px, 4.5vw, 44px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .section-desc { color: var(--muted); max-width: 620px; margin-bottom: 48px; }
+
+    /* ── Tlačítka ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border: 1.5px solid transparent;
+      transition: background var(--t), border-color var(--t), color var(--t), transform var(--t), box-shadow var(--t);
+      cursor: pointer;
+    }
+    .btn svg { width: 18px; height: 18px; }
+    .btn-primary { background: var(--accent-hi); color: #fff; }
+    [data-theme="dark"] .btn-primary { color: #04141a; box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
+    .btn-outline { border-color: var(--border); color: var(--text); background: var(--surface); }
+    .btn-outline:hover { border-color: var(--accent-hi); color: var(--accent); transform: translateY(-2px); }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid transparent;
+    }
+    [data-theme="dark"] .tag { border-color: rgba(45, 217, 242, .2); }
+
+    /* ══════════════════ NAVBAR ══════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--t), border-color var(--t);
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      gap: 16px;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      white-space: nowrap;
+    }
+    .logo .prompt { color: var(--accent); }
+    .logo .cursor {
+      display: inline-block;
+      width: 9px; height: 18px;
+      margin-left: 4px;
+      background: var(--accent);
+      animation: blink 1.1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a {
+      display: inline-block;
+      padding: 10px 14px;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--muted);
+      border-radius: var(--radius-sm);
+      transition: color var(--t), background var(--t);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--accent-soft); }
+
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      transition: color var(--t), border-color var(--t), transform var(--t);
+    }
+    .icon-btn:hover { color: var(--accent); border-color: var(--accent-hi); transform: translateY(-1px); }
+    .icon-btn svg { width: 19px; height: 19px; }
+    /* přepínání ikon slunce/měsíc */
+    [data-theme="light"] .icon-moon { display: block; }
+    [data-theme="light"] .icon-sun  { display: none; }
+    [data-theme="dark"]  .icon-moon { display: none; }
+    [data-theme="dark"]  .icon-sun  { display: block; }
+
+    .lang-btn {
+      min-width: 44px; height: 44px;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .hamburger { display: none; }
+
+    /* ══════════════════ HERO ══════════════════ */
+    .hero {
+      padding: 170px 0 110px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* jemná mřížka na pozadí */
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: .35;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 30%, transparent 75%);
+    }
+    .hero .container {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, .7);
+    }
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(38px, 6vw, 62px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 .accent { color: var(--accent); }
+    [data-theme="dark"] .hero h1 .accent { text-shadow: 0 0 32px var(--accent-glow); }
+    .hero-sub { color: var(--muted); font-size: 18px; max-width: 520px; margin-bottom: 36px; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    /* Terminálové okno */
+    .terminal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.9;
+    }
+    [data-theme="dark"] .terminal { box-shadow: var(--shadow-lg), 0 0 60px var(--accent-glow); }
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .terminal-bar .dot-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-bar .red    { background: #ff5f57; }
+    .terminal-bar .yellow { background: #febc2e; }
+    .terminal-bar .green  { background: #28c840; }
+    .terminal-bar .title  { margin-left: auto; font-size: 12px; color: var(--muted); }
+    .terminal-body { padding: 20px 22px; min-height: 240px; }
+    .terminal-body .line { white-space: pre-wrap; word-break: break-word; }
+    .terminal-body .cmd::before { content: "$ "; color: var(--accent); font-weight: 700; }
+    .terminal-body .out { color: var(--muted); }
+    .terminal-body .ok  { color: #22c55e; }
+    .terminal-body .caret {
+      display: inline-block;
+      width: 8px; height: 15px;
+      vertical-align: -2px;
+      background: var(--accent);
+      animation: blink 1.1s steps(1) infinite;
+    }
+
+    /* ══════════════════ O MNĚ ══════════════════ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    /* Fotka — nahraď <div class="photo-ph"> vlastním <img> */
+    .about-photo {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      aspect-ratio: 4 / 5;
+    }
+    .about-photo::after {
+      content: "";
+      position: absolute; inset: 0;
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+      pointer-events: none;
+    }
+    .photo-ph {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background:
+        radial-gradient(circle at 30% 20%, var(--accent-soft), transparent 60%),
+        var(--surface);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      text-align: center;
+      padding: 20px;
+    }
+    .photo-ph svg { width: 44px; height: 44px; opacity: .5; }
+    .about-text p { color: var(--muted); margin-bottom: 18px; }
+    .about-text p strong { color: var(--text); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      text-align: center;
+      transition: border-color var(--t), transform var(--t);
+    }
+    .stat:hover { border-color: var(--accent-hi); transform: translateY(-3px); }
+    .stat .num {
+      font-family: var(--font-head);
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+    /* ══════════════════ TECHNOLOGIE ══════════════════ */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .tech-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+    }
+    .tech-card:hover { border-color: var(--accent-hi); transform: translateY(-4px); box-shadow: var(--shadow); }
+    .tech-card-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .tech-card-head .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-soft);
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .tech-card-head .icon svg { width: 22px; height: 22px; }
+    .tech-card-head h3 { font-family: var(--font-head); font-size: 19px; font-weight: 600; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: color var(--t), border-color var(--t), background var(--t);
+      cursor: default;
+    }
+    .chip:hover { color: var(--accent); border-color: var(--accent-hi); background: var(--accent-soft); }
+
+    /* ══════════════════ CERTIFIKACE ══════════════════ */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+    }
+    .cert-card:hover { border-color: var(--accent-hi); transform: translateY(-4px); box-shadow: var(--shadow); }
+    .cert-card .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .cert-card .icon svg { width: 22px; height: 22px; }
+    .cert-card h3 { font-family: var(--font-head); font-size: 17px; font-weight: 600; line-height: 1.35; }
+    .cert-card .issuer { font-size: 14px; color: var(--muted); }
+    .cert-card .year {
+      margin-top: auto;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--accent);
+    }
+
+    /* ══════════════════ PROJEKTY ══════════════════ */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+    }
+    .project-card:hover { border-color: var(--accent-hi); transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    /* zvýrazněná karta — projekt, na který se aktuálně zaměřuji */
+    .project-card.featured { border-color: var(--accent-hi); }
+    [data-theme="dark"] .project-card.featured { box-shadow: 0 0 32px var(--accent-glow); }
+    .thumb-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: var(--accent-hi);
+      color: #fff;
+    }
+    [data-theme="dark"] .thumb-badge { color: #04141a; }
+    /* Náhled projektu — nahraď vlastním <img src="..."> */
+    .project-thumb {
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 70% 30%, var(--accent-soft), transparent 65%),
+        var(--surface);
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-thumb svg { width: 36px; height: 36px; opacity: .45; }
+    .project-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .project-body h3 { font-family: var(--font-head); font-size: 18px; font-weight: 600; }
+    .project-body p { font-size: 14.5px; color: var(--muted); flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-links { display: flex; gap: 14px; margin-top: 4px; }
+    .project-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent);
+      padding: 6px 0;
+      transition: opacity var(--t);
+    }
+    .project-links a:hover { opacity: .75; }
+    .project-links svg { width: 15px; height: 15px; }
+
+    /* ══════════════════ GALERIE ══════════════════ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+    }
+    .gallery-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: var(--shadow-lg); border-color: var(--accent-hi); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-item .caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 14px 16px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      background: linear-gradient(transparent, rgba(0, 0, 0, .65));
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity var(--t), transform var(--t);
+    }
+    .gallery-item:hover .caption { opacity: 1; transform: translateY(0); }
+    .gallery-ph {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+    .gallery-ph svg { width: 34px; height: 34px; opacity: .45; }
+    /* různé odstíny placeholderů, ať mřížka nepůsobí prázdně */
+    .gallery-ph.v1 { background: radial-gradient(circle at 25% 25%, var(--accent-soft), transparent 70%), var(--surface); }
+    .gallery-ph.v2 { background: radial-gradient(circle at 75% 30%, var(--accent-soft), transparent 70%), var(--surface); }
+    .gallery-ph.v3 { background: radial-gradient(circle at 50% 80%, var(--accent-soft), transparent 70%), var(--surface); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(4, 8, 12, .88);
+      backdrop-filter: blur(6px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img, .lightbox .lightbox-ph {
+      max-width: min(1000px, 92vw);
+      max-height: 84vh;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+    .lightbox .lightbox-ph {
+      width: min(760px, 90vw);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 14px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 22px; right: 26px;
+      width: 46px; height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      transition: background var(--t);
+    }
+    .lightbox-close:hover { background: rgba(255, 255, 255, .22); }
+    .lightbox-close svg { width: 20px; height: 20px; }
+
+    /* ══════════════════ KONTAKT ══════════════════ */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .contact-list { display: flex; flex-direction: column; gap: 14px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color var(--t), transform var(--t);
+    }
+    .contact-item:hover { border-color: var(--accent-hi); transform: translateX(4px); }
+    .contact-item .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .contact-item .icon svg { width: 20px; height: 20px; }
+    .contact-item .lbl { font-size: 12.5px; color: var(--muted); }
+    .contact-item .val { font-weight: 600; font-size: 15px; word-break: break-all; }
+
+    .contact-terminal { align-self: stretch; }
+    .contact-terminal .terminal-body { min-height: 0; }
+
+    /* ══════════════════ FOOTER ══════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+    }
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    footer .mono { font-family: var(--font-mono); font-size: 12.5px; }
+
+    /* ══════════════════ SCROLL REVEAL ══════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease-out, transform .55s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ══════════════════ RESPONSIVE ══════════════════ */
+    @media (max-width: 1024px) {
+      .hero .container { grid-template-columns: 1fr; gap: 48px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { max-width: 340px; }
+      .projects-grid, .cert-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 72px 0; }
+      .hero { padding: 130px 0 80px; }
+      .nav-links {
+        position: fixed;
+        top: 68px; left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        padding: 14px 24px 20px;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        display: none;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 13px 14px; }
+      .hamburger { display: inline-flex; }
+      .tech-grid, .contact-wrap, .cert-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .stat { padding: 16px 10px; }
+      .stat .num { font-size: 26px; }
+    }
+    @media (max-width: 480px) {
+      .projects-grid, .cert-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .hero-cta .btn { width: 100%; justify-content: center; }
+    }
+  </style>
 </head>
-<body class="jq--home">
-    <header>
-        <div class="nav-background"></div>
-        <div class="nav-bar row ">    
-            
-            <nav>
-                <ul>
-                    <li><a href="#home" class="jq--scroll-home">Domů</a></li>
-                    <li><a href="#about" class="jq--scroll-about">O mně</a></li>
-                    <li><a href="#services" class="jq--scroll-skill">Dovednosti</a></li>
-                    <li><a href="#contact" class="jq--scroll-project">Projekty</a></li>
-                    <li><a href="#contact" class="jq--scroll-contakt">Kontakt</a></li>
+<body>
 
-                </ul>
-                    <!-- mobilní navigační menu -->
-                    <div class="mobil-nav-background"></div>
-                    <a class="mobil-nav-icon jq--nav-icon"> 
-                        <img class="jq--image-hamburger" src="img/hamburgerMenu.png" alt="Menu">
-                    </a>  
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#" class="logo" aria-label="Domů">
+        <span class="prompt">~/</span><span>jan.cerny</span><span class="cursor" aria-hidden="true"></span>
+      </a>
 
+      <nav aria-label="Hlavní navigace">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about"    data-cs="O mně"        data-en="About">O mně</a></li>
+          <li><a href="#tech"     data-cs="Technologie"  data-en="Tech stack">Technologie</a></li>
+          <li><a href="#certs"    data-cs="Certifikace"  data-en="Certifications">Certifikace</a></li>
+          <li><a href="#projects" data-cs="Projekty"     data-en="Projects">Projekty</a></li>
+          <li><a href="#contact"  data-cs="Kontakt"      data-en="Contact">Kontakt</a></li>
+        </ul>
+      </nav>
 
-            </nav>
+      <div class="nav-actions">
+        <button class="icon-btn lang-btn" id="langToggle" aria-label="Přepnout jazyk / Switch language">EN</button>
+        <button class="icon-btn" id="themeToggle" aria-label="Přepnout světlý a tmavý režim">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="icon-btn hamburger" id="hamburger" aria-label="Otevřít menu" aria-expanded="false" aria-controls="navLinks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
+  <main>
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero">
+      <div class="container">
+        <div>
+          <span class="hero-badge">
+            <span class="dot" aria-hidden="true"></span>
+            <span data-cs="QA / Integration Tester @ Trask Solutions" data-en="QA / Integration Tester @ Trask Solutions">QA / Integration Tester @ Trask Solutions</span>
+          </span>
+          <h1>
+            <span data-cs="Ahoj, jsem" data-en="Hi, I'm">Ahoj, jsem</span> <span class="accent">Jan&nbsp;Černý</span>.<br />
+            <span data-cs="Tester · Programátor · AI nadšenec" data-en="Tester · Developer · AI enthusiast">Tester · Programátor · AI nadšenec</span>
+          </h1>
+          <p class="hero-sub"
+             data-cs="Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví — od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl."
+             data-en="I test web and mobile applications in banking and insurance — from test analysis through API and integration testing to Playwright automation. I enjoy finding bugs before users do and bringing AI into everything where it makes sense.">
+            Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví — od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">
+              <span data-cs="Prohlédnout projekty" data-en="View projects">Prohlédnout projekty</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              <span data-cs="Kontaktuj mě" data-en="Get in touch">Kontaktuj mě</span>
+            </a>
+          </div>
         </div>
 
-        <div class="heder_text">
-            <div id="logo">
-                <img src="img/logo/logo.png" alt="logo">
-            </div>
-            <h1>Jan Černý</h1>
-            <h2>Já a svět IT</h2>
-            <p>„Vytrvalost  otevírá cestu k úspěchu.“</p>
-            <a class="btn btn-full jq--scroll-about" href="#">Kdo jsem?</a>
-            <a class="btn btn-empty jq--scroll-project" href="#">Projekty</a>
+        <div class="terminal" aria-hidden="true">
+          <div class="terminal-bar">
+            <span class="dot-btn red"></span><span class="dot-btn yellow"></span><span class="dot-btn green"></span>
+            <span class="title">jan@portfolio: ~</span>
+          </div>
+          <div class="terminal-body" id="terminalBody"></div>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <main>
+    <!-- ═══════════ O MNĚ ═══════════ -->
+    <section class="section" id="about">
+      <div class="container">
+        <p class="section-label">whoami</p>
+        <h2 class="section-title reveal" data-cs="O mně" data-en="About me">O mně</h2>
 
-        <!-- 1 sekce  -->
-        <section class="obout-us row jq--about">
-            <div class="heading-main">
-                <h2>O mně</h2>
-            </div>
+        <div class="about-grid">
+          <div class="about-photo reveal">
+            <img src="fotky/profil.jpg" alt="Jan Černý" loading="lazy" />
+          </div>
 
-            <div class="about-obr">
-
-                <div class="about-col">
-                    <img src="img/foto CV.png" alt="">
-                   
-                    <div class="moto">
-                        <p>„Každý problém je jen výzva <br> čekající na řešení.“</p>
-                    </div>
-                    <!-- <div class="podpis">
-                        <p >Jan Černý</p>
-                    </div> -->
-                    
-                </div>
-
-
-                <div class="about-col">
-                    <!-- <h3>Jsem programátor</h3> -->
-                    <div class="info-text ">
-                        <p>Jsem IT nadšenec s vášní pro programování, tvorbu webových aplikací a testing. Mým cílem je neustále se rozvíjet a zdokonalovat v oblasti vývoje softwaru a webových technologií. V rámci rekvalifikačního kurzu jsem si osvojil dovednosti v Pythonu, HTML, CSS, JavaScriptu, Django a Reactu.</p>
-                    </div>    
-                    <div class="info-text ">
-                        <p>V závěrečném projektu aplikace pro správu pojištěnců jsem dbal na dodržování principů SRP, SoC a DRY. Kromě vlastní práce jsem pomáhal i ostatním studentům s implementací těchto zásad.</p>
-                    </div> 
-                    <div class="info-text ">
-                        <p>Baví mě objevovat nové technologie a vytvářet moderní, efektivní řešení. Rád pracuji v týmu a vítám nové příležitosti v oblasti vývoje i testování softwaru.</p>
-                    </div> 
-
-
-                    </div>
-            
-                </div>
-            </div>
-        </section>
-
-
-
-<!-- 2 sekce DOVEDNOSTI -->
-
-        <section class="skills jq--skill ">
-            <div class="heading-main">
-                <h2>Dovednosti</h2>
-            </div>
-
-            <!-- dovedností -->
-            <div class="skills-grid row">
-
-                    <div class="one-skill">
-                        <p>Python je můj primární programovací jazyk, který používám pro tvorbu skriptů, webových aplikací a automatizaci procesů. Neustále se v něm zdokonaluji a hledám nové možnosti jeho využití.</p>
-                        <div class="logo-name">
-                            <img class="clearfix" src="img/dovednosti loga/python.png" alt="Python logo">
-                            <p>Python</p>
-                        </div>
-                    </div>
-                    
-                    <div class="one-skill">
-                        <p>Tyto technologie využívám k vytváření moderních a responzivních webových stránek. HTML a CSS mi umožňují strukturovat a stylovat obsah, zatímco JavaScript přidává interaktivní prvky.</p>
-                        <div class="logo-name">
-                            <img src="img/dovednosti loga/html.png" alt="html logo">
-                            <img src="img/dovednosti loga/css.png" alt="css logo">
-                            <img src="img/dovednosti loga/javascr.png" alt="JavaScript logo">
-
-                            <p>Html/CSS/JS</p>
-                        </div>
-                    </div>
-
-                    <div class="one-skill">
-                        <p>JavaScript používám nejen pro frontendové aplikace, ale i jako součást frameworků jako React a Django. Neustále se v něm zdokonaluji, abych vytvářel dynamické a uživatelsky přívětivé weby.</p>
-                        <div class="logo-name">
-                            <img src="img/dovednosti loga/javascr.png" alt="JavaScript logo">
-                            <p>JavaScript</p>
-                        </div>
-                    </div>
-       
-                
-                    <div class="one-skill">
-                        <p>SQL využívám pro správu a manipulaci dat v projektech vyžadujících databázové řešení. Zaměřuji se především na práci se SQLite v rámci webových aplikací.</p>
-                        <div class="logo-name">
-                            <img class="clearfix" src="img/dovednosti loga/sql.png" alt="SQL logo">
-                            <p>SQL</p>
-                        </div>
-                    </div>
-                    
-                    <div class="one-skill">
-                        <p>Django a React používám jako backend a frontend pro webové aplikace. Tuto kombinaci se aktuálně učím a pracuji na prvních projektech, abych ji plně využil pro komplexní aplikace.</p>
-                        <div class="logo-name">
-                            <img src="img/dovednosti loga/django.png" alt="Django logo">
-                            <img src="img/dovednosti loga/react.png" alt="React logo">
-                            
-                            <p>Django a React</p>
-                        </div>
-                    </div>
-
-                    <div class="one-skill">
-                        <p>Git používám pro verzování a sledování změn v kódu, zatímco GitHub mi slouží k hostování projektů a spolupráci. Tyto nástroje jsou pro mě nepostradatelné při práci na větších projektech.</p>
-                        <div class="logo-name">
-                            <img src="img/dovednosti loga/git.png" alt="git logo">
-                            <img src="img/dovednosti loga/github.png" alt="github logo">
-
-                            <p>Git a GitHub</p>
-                        </div>
-                    </div>
-  
-
-                    <div class="one-skill">
-                        <p>VS Code je mé oblíbené vývojové prostředí pro většinu projektů díky flexibilitě a rozšířením. PyCharm využívám jako alternativu při práci na rozsáhlejších Python projektech.</p>
-                        <div class="logo-name">
-                            <img class="clearfix" src="img/dovednosti loga/vscode.png" alt="visual scutio code logo">
-                            <img class="clearfix" src="img/dovednosti loga/pycharm.png" alt="pycharm logo">
-                            <p>VS Code a PyCharm</p>
-                        </div>
-                    </div>
-                    
-<!--                   
-                    <div class="one-skill">
-                        <p>Postman využívám pro testování a správu API. Je to nástroj, který mi umožňuje rychle a efektivně ověřovat funkčnost backendových služeb. V současnosti se s ním učím pracovat a plánuji ho zapojit do svých budoucích projektů.</p>
-                        <div class="logo-name">
-                            <img src="img/dovednosti loga/postman-icon.png" alt="postman logo">
-                            <p>Postman</p>
-                        </div>
-                    </div> -->
-            </div class="dov-info row">
-
-        </section>
-
-<!-- 3 sekce PROJEKTY -->
-
-        <section class=" row jq--project" >
-            <div class="heading-main">
-                <h2>Projekty</h2>
-            </div>
- <div class="projekty">
-                <!-- Projekt box...1.  -->
-            <div class="projekt-example ">
-
-                    <h3>Jednostránkový web – Osobní prezentace</h3>
-                    <p>Tento jednostránkový web slouží jako profesionální vizitka a prezentace mých dovedností v oblasti IT. Struktura je rozdělena do sekcí „O mně“, „Dovednosti“, „Projekty“ a „Kontakt“. Web je plně responzivní, využívá moderní design a nabízí intuitivní navigaci pomocí JavaScriptu a knihovny jQuery. Pro lepší prezentaci projektů je integrován Lightbox pro interaktivní zobrazení obrázků. Celý web je vytvořen pomocí HTML, CSS a JS s důrazem na přehlednost a aktuální webové standardy.</p>
-                    
-                        <!-- HLAVNÍ OBR -->
-                    <div class="galerie">     
-                        <div class="projekt-main-obr">
-                        <a href="img/portfolio/One_page_web/main.png" data-title="Jednostránkový Web - Uvítání" data-lightbox="mygallery"><img src="img/portfolio/One_page_web/main.png" alt=""></a>
-                        </div>
-
-                        <div class="projekt-side-obr">
-                        <a href="img/portfolio/One_page_web/side_1.png" data-lightbox="mygallery"><img src="img/portfolio/One_page_web/side_1.png" alt=""></a>
-                        
-                        <a href="img/portfolio/One_page_web/side_2.png" data-lightbox="mygallery"><img src="img/portfolio/One_page_web/side_2.png" alt=""></a>
-
-                        <a href="img/portfolio/One_page_web/side_3.png" data-lightbox="mygallery"><img src="img/portfolio/One_page_web/side_3.png" alt=""></a>
-                        
-                        <!-- <a href="img/portfolio/one-page-web2.png" data-lightbox="mygallery"><img src="img/portfolio/one-page-web2.png" alt=""></a> -->
-                        </div>
-
-                    </div>
-
-                        <div class="btn-github-container">
-                            <a class="btn-github" href="https://github.com/PhDrasliku/PhDrasliku.github.io">
-                                 <img src="img/dovednosti loga/github.png" alt="">
-                                 projekt na GitHub 
-                                <img src="img/dovednosti loga/github.png" alt="">
-                            </a>
-                        </div>
-            </div>
-                            <!-- projekt box konex -->
-
-
-                <!-- Projekt box...1.  -->
-            <div class="projekt-example ">
-
-                    <h3>Konzolová aplikace v Pythonu</h3>
-                    <p>Tato konzolová aplikace pro správu studentů je ukázkou práce s čistým Python kódem. Aplikace umožňuje evidenci, vyhledávání, mazání a generování studentů s validací vstupů a ukládáním dat do souboru. Při vývoji jsem kladl důraz na čistotu kódu, přehlednou architekturu a dodržování principů SRP, SoC a DRY. Projekt je navržen tak, aby byl snadno rozšiřitelný a poskytoval praktickou ukázku práce s objekty a soubory v Pythonu.</p>
-                    
-                        <!-- HLAVNÍ OBR -->
-                    <div class="galerie">     
-                        <div class="projekt-main-obr">
-                    <a href="img/portfolio/Student/main_student.png" data-title="Jednostránkový Web - Uvítání" data-lightbox="mygallery"><img src="img/portfolio/Student/main_student.png" alt=""></a>
-                        </div>
-
-                        <div class="projekt-side-obr">
-                       <a href="img/portfolio/Student/side1_student.png" data-lightbox="mygallery"><img src="img/portfolio/Student/side1_student.png" alt=""></a>
-                    
-                    <a href="img/portfolio/Student/side2_student.png" data-lightbox="mygallery"><img src="img/portfolio/Student/side2_student.png" alt=""></a>
-
-                    <a href="img/portfolio/Student/side4_student.png" data-lightbox="mygallery"><img src="img/portfolio/Student/side4_student.png" alt=""></a>
-                    
-                    <a href="img/portfolio/Student/side5_studnt.png" data-lightbox="mygallery"><img src="img/portfolio/Student/side5_studnt.png" alt=""></a>
-                    </div>
-
-                    </div>
-
-                        <div class="btn-github-container">
-                            <a class="btn-github" href="https://github.com/PhDrasliku/Evidence_studentu.git">
-                                 <img src="img/dovednosti loga/github.png" alt="">
-                                 projekt na GitHub 
-                                <img src="img/dovednosti loga/github.png" alt="">
-                            </a>
-                        </div>
-            </div>
-    
-
-</div class="projekty">
-        </section>
-
-
-<!-- 4 sekce Kontakt -->
-
-        <section class="kontakt  jq--contakt">
-            <div class="heading-main">
-                <h2>Kontakt</h2>
-            </div>
-
-
-        <!--.... Formulář  ....-->
-
-            <form action="https://formspree.io/f/xqaqlodr" class="contakt-form row" method="POST">
-                <input type="text" name="Jméno" placeholder="Jméno a příjmení" required> <br>
-                <input type="text" name="Předmět" placeholder="Předmět" required> <br>
-                <input type="email" name="E-mail" placeholder="E-mail" required> <br>
-                <textarea name="Zpřáva" placeholder="Zpráva" required></textarea> <br>
-                <input type="submit" value="Odeslat E-mail">
-            </form>
-                <!-- Element pro zobrazení výsledku -->
-                <div class="status-form"></div>
-        </section>
-        <script src="js/form-E-mail.js"></script>
-
-
-    </main>
-
-    <footer>
-        <div class="row">
-            
-            <div class="social">    
-            <p>
-                <a href="https://github.com/PhDrasliku" target="_blank">GitHub</a>
+          <div class="about-text reveal">
+            <p data-cs="Jsem Ing. Jan Černý, Ph.D. — do IT jsem přešel z technického světa. Vystudoval jsem ČZU v Praze (zemědělská technika se zaměřením na jakost) a doktorát z energetiky, školil jsem CAD/CAM software od Autodesku a učil technickou dokumentaci a hydromechaniku."
+               data-en="I'm Jan Černý (MSc., Ph.D.) — I moved into IT from the engineering world. I graduated from CULS Prague (agricultural engineering with a focus on quality) with a doctorate in power engineering, trained people in Autodesk CAD/CAM software and taught technical documentation and hydromechanics.">
+              Jsem Ing. Jan Černý, Ph.D. — do IT jsem přešel z technického světa. Vystudoval jsem ČZU v Praze (zemědělská technika se zaměřením na jakost) a doktorát z energetiky, školil jsem CAD/CAM software od Autodesku a učil technickou dokumentaci a hydromechaniku.
             </p>
-            <p>
-                <!-- <a href="www.linkedin.com" target="_blank">LinkedIn</a> -->
+            <p data-cs="Po rekvalifikaci na tvorbu webových aplikací (ITnetwork) jsem nastoupil jako tester do Trask Solutions. Prošel jsem funkčním testováním webové a mobilní bankovní aplikace — od manuálních testů přes test analýzy až po E2E testy a roli znalostního experta pro business. Dnes dělám integrační testování v pojišťovnictví: API testy v Insomnii, analýzu logů v Kibaně a ve volných chvílích stavím Playwright automatizaci."
+               data-en="After retraining in web application development (ITnetwork) I joined Trask Solutions as a tester. I went through functional testing of a web and mobile banking application — from manual tests through test analyses to E2E tests and a subject-matter-expert role for the business side. Today I do integration testing in insurance: API testing in Insomnia, log analysis in Kibana, and I'm building Playwright automation in my spare moments.">
+              Po rekvalifikaci na tvorbu webových aplikací (ITnetwork) jsem nastoupil jako tester do Trask Solutions. Prošel jsem funkčním testováním webové a mobilní bankovní aplikace — od manuálních testů přes test analýzy až po E2E testy a roli znalostního experta pro business. Dnes dělám integrační testování v pojišťovnictví: API testy v Insomnii, analýzu logů v Kibaně a ve volných chvílích stavím Playwright automatizaci.
             </p>
+            <p data-cs="Moje motto: „Vytrvalost otevírá cestu k úspěchu.“ Mimo pracovní dobu se každý týden vzdělávám — směřuji k automatizovanému testování, AI agentům a schopnosti dotáhnout vlastní projekt od nápadu po realizaci."
+               data-en="My motto: 'Perseverance opens the path to success.' I keep learning every week outside working hours — heading towards test automation, AI agents and the ability to take my own project from idea to delivery.">
+              Moje motto: „Vytrvalost otevírá cestu k úspěchu.“ Mimo pracovní dobu se každý týden vzdělávám — směřuji k automatizovanému testování, AI agentům a schopnosti dotáhnout vlastní projekt od nápadu po realizaci.
+            </p>
+
+            <div class="stats">
+              <div class="stat">
+                <div class="num" data-count="17">0</div>
+                <div class="lbl" data-cs="certifikátů" data-en="certificates">certifikátů</div>
+              </div>
+              <div class="stat">
+                <div class="num" data-count="10">0</div>
+                <div class="lbl" data-cs="hodin sebevzdělávání týdně" data-en="hours of self-study weekly">hodin sebevzdělávání týdně</div>
+              </div>
+              <div class="stat">
+                <div class="num" data-count="2">0</div>
+                <div class="lbl" data-cs="enterprise projekty" data-en="enterprise projects">enterprise projekty</div>
+              </div>
             </div>
-
-            <p class="copywrite">Copywrite &copy; 2025 Moje Portfolio</p>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
+    <!-- ═══════════ TECHNOLOGIE ═══════════ -->
+    <section class="section" id="tech">
+      <div class="container">
+        <p class="section-label">cat skills.json</p>
+        <h2 class="section-title reveal" data-cs="Technologie &amp; dovednosti" data-en="Tech stack &amp; skills">Technologie &amp; dovednosti</h2>
+        <p class="section-desc reveal"
+           data-cs="Nástroje a jazyky, se kterými pracuji denně."
+           data-en="Tools and languages I work with daily.">
+          Nástroje a jazyky, se kterými pracuji denně.
+        </p>
+
+        <div class="tech-grid">
+          <div class="tech-card reveal">
+            <div class="tech-card-head">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+              <h3 data-cs="Testování &amp; QA" data-en="Testing &amp; QA">Testování &amp; QA</h3>
+            </div>
+            <div class="chips">
+              <span class="chip" data-cs="Test analýza" data-en="Test analysis">Test analýza</span>
+              <span class="chip" data-cs="Integrační testování" data-en="Integration testing">Integrační testování</span>
+              <span class="chip" data-cs="API testování" data-en="API testing">API testování</span>
+              <span class="chip">Insomnia</span>
+              <span class="chip">Postman</span>
+              <span class="chip">Kibana</span>
+              <span class="chip" data-cs="UAT &amp; regrese" data-en="UAT &amp; regression">UAT &amp; regrese</span>
+              <span class="chip" data-cs="E2E testy" data-en="E2E tests">E2E testy</span>
+              <span class="chip" data-cs="Mobilní testování" data-en="Mobile testing">Mobilní testování</span>
+              <span class="chip">DevTools</span>
+            </div>
+          </div>
+
+          <div class="tech-card reveal">
+            <div class="tech-card-head">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg></span>
+              <h3 data-cs="Automatizace &amp; programování" data-en="Automation &amp; programming">Automatizace &amp; programování</h3>
+            </div>
+            <div class="chips">
+              <span class="chip">Playwright</span>
+              <span class="chip">Selenium IDE</span>
+              <span class="chip">Python</span>
+              <span class="chip">HTML &amp; CSS</span>
+              <span class="chip">JavaScript</span>
+              <span class="chip">Django</span>
+              <span class="chip">React</span>
+              <span class="chip">SQL / SQLite</span>
+              <span class="chip">REST API</span>
+            </div>
+          </div>
+
+          <div class="tech-card reveal">
+            <div class="tech-card-head">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.3C6.2 13.5 5 11.4 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg></span>
+              <h3 data-cs="AI &amp; LLM" data-en="AI &amp; LLM">AI &amp; LLM</h3>
+            </div>
+            <div class="chips">
+              <span class="chip">Claude</span>
+              <span class="chip">Claude Code</span>
+              <span class="chip">Prompt engineering</span>
+              <span class="chip" data-cs="AI-asistovaný vývoj" data-en="AI-assisted development">AI-asistovaný vývoj</span>
+              <span class="chip" data-cs="AI agenti (učím se)" data-en="AI agents (learning)">AI agenti (učím se)</span>
+              <span class="chip" data-cs="n8n (učím se)" data-en="n8n (learning)">n8n (učím se)</span>
+            </div>
+          </div>
+
+          <div class="tech-card reveal">
+            <div class="tech-card-head">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+              <h3 data-cs="Nástroje &amp; procesy" data-en="Tools &amp; processes">Nástroje &amp; procesy</h3>
+            </div>
+            <div class="chips">
+              <span class="chip">Jira</span>
+              <span class="chip">Zephyr</span>
+              <span class="chip">Confluence</span>
+              <span class="chip">Figma</span>
+              <span class="chip">Git / GitHub</span>
+              <span class="chip">VS Code</span>
+              <span class="chip">Agile / Waterfall</span>
+              <span class="chip" data-cs="Sekvenční diagramy" data-en="Sequence diagrams">Sekvenční diagramy</span>
+              <span class="chip">Swagger</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CERTIFIKACE ═══════════ -->
+    <section class="section" id="certs">
+      <div class="container">
+        <p class="section-label">ls certs/</p>
+        <h2 class="section-title reveal" data-cs="Certifikace" data-en="Certifications">Certifikace</h2>
+        <p class="section-desc reveal"
+           data-cs="Kliknutím na certifikát otevřeš jeho PDF."
+           data-en="Click a certificate to open its PDF.">
+          Kliknutím na certifikát otevřeš jeho PDF.
+        </p>
+
+        <div class="cert-grid">
+          <div class="cert-card reveal">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-3 5 3-1.5-7.5"/></svg></span>
+            <h3 data-cs="Rekvalifikace „Tvorba www aplikací“ + kurzy" data-en="Retraining 'Web Application Development' + courses">Rekvalifikace „Tvorba www aplikací“ + kurzy</h3>
+            <p class="issuer" data-cs="ITnetwork — akreditace MŠMT, 193 hodin" data-en="ITnetwork — accredited by the Czech Ministry of Education, 193 hours">ITnetwork — akreditace MŠMT, 193 hodin</p>
+            <div class="chips">
+              <a class="chip" href="certifikace/Certificate%20Python%20Basic%20(1)%20Jan%20Černý.%20(1).pdf" target="_blank">Python Basic</a>
+              <a class="chip" href="certifikace/Certifikat_Zakladni_konstrukce_jazyka_Python.pdf" target="_blank" data-cs="Základy Pythonu" data-en="Python fundamentals">Základy Pythonu</a>
+              <a class="chip" href="certifikace/Certifikat_Objektove_orientovane_programovani_v_Pythonu.pdf" target="_blank" data-cs="OOP v Pythonu" data-en="OOP in Python">OOP v Pythonu</a>
+              <a class="chip" href="certifikace/Certifikat_Kolekce_v_Pythonu.pdf" target="_blank" data-cs="Kolekce v Pythonu" data-en="Python collections">Kolekce v Pythonu</a>
+              <a class="chip" href="certifikace/Certifikat_NumPy_-_Matematika_v_Pythonu%20(1).pdf" target="_blank">NumPy</a>
+              <a class="chip" href="certifikace/Certifikat_Pandas_-_Vizualizace_dat_v_Pythonu%20(1).pdf" target="_blank">Pandas</a>
+              <a class="chip" href="certifikace/Certifikat_Zaklady_Django_frameworku_pro_Python.pdf" target="_blank" data-cs="Základy Django" data-en="Django basics">Základy Django</a>
+              <a class="chip" href="certifikace/Certifikat_REST_API_v_Django_-_Filmova_databaze%20(1).pdf" target="_blank">REST API v Django</a>
+              <a class="chip" href="certifikace/Certifikat_SQLite_databaze_krok_za_krokem.pdf" target="_blank">SQLite</a>
+              <a class="chip" href="certifikace/Certifikat_Zakladni_konstrukce_jazyka_JavaScript.pdf" target="_blank" data-cs="Základy JavaScriptu" data-en="JavaScript fundamentals">Základy JavaScriptu</a>
+              <a class="chip" href="certifikace/Certifikat_Zaklady_React.pdf" target="_blank" data-cs="Základy React" data-en="React basics">Základy React</a>
+              <a class="chip" href="certifikace/Certifikat_Moderni_webdesign.pdf" target="_blank" data-cs="Moderní webdesign" data-en="Modern web design">Moderní webdesign</a>
+              <a class="chip" href="certifikace/Certifikat_Git%20(1).pdf" target="_blank">Git</a>
+              <a class="chip" href="certifikace/Certifikat_Best_practices_pro_navrh_softwaru%20(1).pdf" target="_blank" data-cs="Best practices návrhu SW" data-en="Software design best practices">Best practices návrhu SW</a>
+            </div>
+            <span class="year">2025</span>
+          </div>
+
+          <div class="cert-card reveal">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.3C6.2 13.5 5 11.4 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg></span>
+            <h3 data-cs="Claude &amp; Claude Code" data-en="Claude &amp; Claude Code">Claude &amp; Claude Code</h3>
+            <p class="issuer">Anthropic</p>
+            <div class="chips">
+              <a class="chip" href="certifikace/Claude%20101%20Certifikát.pdf" target="_blank">Claude 101</a>
+              <a class="chip" href="certifikace/Claude%20Code%20101%20Certifikát.pdf" target="_blank">Claude Code 101</a>
+              <a class="chip" href="certifikace/Claude%20Code%20in%20Action%20Certifikát.pdf" target="_blank">Claude Code in Action</a>
+            </div>
+            <span class="year">2026</span>
+          </div>
+
+          <div class="cert-card reveal">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+            <h3 data-cs="Interní školení QA &amp; automatizace" data-en="Internal QA &amp; automation training">Interní školení QA &amp; automatizace</h3>
+            <p class="issuer">Trask Solutions</p>
+            <div class="chips">
+              <span class="chip">Playwright 1+2</span>
+              <span class="chip">Playwright 3 (POM)</span>
+              <span class="chip" data-cs="Defect analýza" data-en="Defect analysis">Defect analýza</span>
+              <span class="chip" data-cs="Plánování testů" data-en="Test planning">Plánování testů</span>
+              <span class="chip" data-cs="Agilní testování" data-en="Agile testing">Agilní testování</span>
+            </div>
+            <span class="year">2025–2026</span>
+          </div>
+
+          <div class="cert-card reveal">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <h3>ISTQB Certified Tester — Foundation Level</h3>
+            <p class="issuer" data-cs="ISTQB / CaSTB — v přípravě" data-en="ISTQB / CaSTB — in preparation">ISTQB / CaSTB — v přípravě</p>
+            <span class="year" data-cs="plán: podzim 2026" data-en="planned: autumn 2026">plán: podzim 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ PROJEKTY ═══════════ -->
+    <section class="section" id="projects">
+      <div class="container">
+        <p class="section-label">git log --projects</p>
+        <h2 class="section-title reveal" data-cs="Projekty" data-en="Projects">Projekty</h2>
+        <p class="section-desc reveal"
+           data-cs="Vlastní projekty, na kterých se učím a které reálně provozuju, a enterprise projekty z Trask Solutions."
+           data-en="Personal projects I learn on and actually run, plus enterprise projects from Trask Solutions.">
+          Vlastní projekty, na kterých se učím a které reálně provozuju, a enterprise projekty z Trask Solutions.
+        </p>
+
+        <div class="projects-grid">
+          <!-- Šmoula — nejsilnější položka -->
+          <article class="project-card featured reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+              <span class="thumb-badge" data-cs="Běží nonstop" data-en="Running 24/7">Běží nonstop</span>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Šmoula — osobní AI agent" data-en="Šmoula — personal AI agent">Šmoula — osobní AI agent</h3>
+              <p data-cs="Agent, který mi běží nepřetržitě na vlastním serveru a ovládám ho z telefonu přes Telegram. Telegram → Oracle Cloud → Claude Code v headless režimu → Git repozitář jako dlouhodobá paměť. Osm systemd služeb, třídění pošty, ranní souhrn, import dat z chytré váhy a lovec volných ARM instancí s adaptivním zpomalováním proti rate-limitu."
+                 data-en="An agent running non-stop on my own server, controlled from my phone via Telegram. Telegram → Oracle Cloud → headless Claude Code → a Git repository as long-term memory. Eight systemd services, mail triage, morning digest, smart-scale data import and a hunter for free ARM instances with adaptive backoff against rate limits.">
+                Agent, který mi běží nepřetržitě na vlastním serveru a ovládám ho z telefonu přes Telegram. Telegram → Oracle Cloud → Claude Code v headless režimu → Git repozitář jako dlouhodobá paměť. Osm systemd služeb, třídění pošty, ranní souhrn, import dat z chytré váhy a lovec volných ARM instancí s adaptivním zpomalováním proti rate-limitu.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Python</span><span class="tag">Claude Code</span><span class="tag">Linux / systemd</span><span class="tag">Oracle Cloud</span><span class="tag">Telegram API</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/jancerny-dev/Smoula" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Účtenky -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Účtenky — fakturační systém" data-en="Účtenky — invoicing system">Účtenky — fakturační systém</h3>
+              <p data-cs="Full-stack aplikace: REST API v Django REST Frameworku, klient v Reactu a Vite, grafy tržeb po měsících a letech. K tomu E2E testy v Playwrightu podle Page Object Modelu a spuštění v Dockeru jedním příkazem. Osoby se nemažou — úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení."
+                 data-en="A full-stack application: a REST API in Django REST Framework, a React and Vite client, revenue charts by month and year. Plus Playwright E2E tests using the Page Object Model and a single-command Docker setup. People are never deleted — both editing and deleting only hide the original record, so invoices keep pointing at the data valid when they were issued.">
+                Full-stack aplikace: REST API v Django REST Frameworku, klient v Reactu a Vite, grafy tržeb po měsících a letech. K tomu E2E testy v Playwrightu podle Page Object Modelu a spuštění v Dockeru jedním příkazem. Osoby se nemažou — úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Django REST</span><span class="tag">React / Vite</span><span class="tag">Playwright</span><span class="tag">Docker</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/jancerny-dev/uctenky" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Klientská zóna pojišťoven -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Klientská zóna pojišťoven — integrační testování" data-en="Insurance client zone — integration testing">Klientská zóna pojišťoven — integrační testování</h3>
+              <p data-cs="Webová a mobilní klientská zóna velké pojišťovací skupiny pro hlášení pojistných událostí. API testy v Insomnii, analýza logů v Kibaně, práce se sekvenčními diagramy a základ Playwright automatizace."
+                 data-en="Web and mobile client zone of a major insurance group for reporting insurance claims. API testing in Insomnia, log analysis in Kibana, working with sequence diagrams and laying the groundwork for Playwright automation.">
+                Webová a mobilní klientská zóna velké pojišťovací skupiny pro hlášení pojistných událostí. API testy v Insomnii, analýza logů v Kibaně, práce se sekvenčními diagramy a základ Playwright automatizace.
+              </p>
+              <div class="project-tags">
+                <span class="tag" data-cs="Integrační testování" data-en="Integration testing">Integrační testování</span><span class="tag">Insomnia</span><span class="tag">Kibana</span><span class="tag">Playwright</span>
+              </div>
+              <div class="project-links">
+                <span style="font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 6px 0;">Trask Solutions · 2026</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Firemní bankovní aplikace -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Firemní bankovní aplikace — QA" data-en="Corporate banking application — QA">Firemní bankovní aplikace — QA</h3>
+              <p data-cs="Funkční testování webové a mobilní aplikace velké banky pro firemní klienty — test analýzy, UAT a regresní testování, E2E testy pro business, testování notifikací a mobilních zařízení, role znalostního experta pro karty, termínované vklady a volné formuláře."
+                 data-en="Functional testing of a major bank's web and mobile application for corporate clients — test analyses, UAT and regression testing, E2E tests for the business side, notification and mobile device testing, subject-matter-expert role for cards, term deposits and free-form requests.">
+                Funkční testování webové a mobilní aplikace velké banky pro firemní klienty — test analýzy, UAT a regresní testování, E2E testy pro business, testování notifikací a mobilních zařízení, role znalostního experta pro karty, termínované vklady a volné formuláře.
+              </p>
+              <div class="project-tags">
+                <span class="tag" data-cs="Test analýza" data-en="Test analysis">Test analýza</span><span class="tag">UAT</span><span class="tag">Jira / Zephyr</span><span class="tag">E2E</span>
+              </div>
+              <div class="project-links">
+                <span style="font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 6px 0;">Trask Solutions · 2025–2026</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ISTQB -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Studijní příručka ISTQB s kontrolní sadou" data-en="ISTQB study guide with a verification suite">Studijní příručka ISTQB s kontrolní sadou</h3>
+              <p data-cs="Česká příručka k certifikaci ISTQB Foundation Level — šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. K němu jsem napsal kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl: ověřuje šest invariantů, z nichž hlavní je, že počet slov na stránce přesně odpovídá zdroji."
+                 data-en="A Czech study guide for the ISTQB Foundation Level certification — six chapters in three variants, over 87,000 words and 887 questions. The content is written in Word and a custom Python generator builds the site from it. I wrote a verification suite for it, because at that scale you cannot spot a lost section by eye: it checks six invariants, the main one being that the word count on each page exactly matches the source.">
+                Česká příručka k certifikaci ISTQB Foundation Level — šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. K němu jsem napsal kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl: ověřuje šest invariantů, z nichž hlavní je, že počet slov na stránce přesně odpovídá zdroji.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Python</span><span class="tag" data-cs="Generátor webu" data-en="Site generator">Generátor webu</span><span class="tag">ISTQB</span><span class="tag">GitHub Actions</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/jancerny-dev/ISTQB" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+                  GitHub
+                </a>
+                <a href="https://jancerny-dev.github.io/ISTQB/" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+                  <span data-cs="Otevřít web" data-en="Open site">Otevřít web</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Playwright E2E -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="E2E testy v Playwrightu" data-en="Playwright E2E tests">E2E testy v Playwrightu</h3>
+              <p data-cs="Scénář nad veřejným e-shopem v TypeScriptu. Netestuje jen proklikání: pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy — připomínky k lokátorům a konzistenci jsou zapracované a popsané v README."
+                 data-en="A TypeScript scenario over a public e-shop. It does not just click through: for three products it stores the name, code and price from the detail page, adds them to the basket and then verifies that every basket row and the total match the stored values. The project went through code review by a more senior colleague — the comments on locators and consistency are addressed and described in the README.">
+                Scénář nad veřejným e-shopem v TypeScriptu. Netestuje jen proklikání: pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy — připomínky k lokátorům a konzistenci jsou zapracované a popsané v README.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E</span><span class="tag" data-cs="Code review" data-en="Code review">Code review</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/jancerny-dev/playwright-e2e" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Evidence studentů -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Evidence studentů" data-en="Student records manager">Evidence studentů</h3>
+              <p data-cs="Konzolová aplikace v Pythonu pro správu studentů — oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak."
+                 data-en="A Python console application for managing student records — a separate entity, collection management, validation and a menu. My first larger program, written entirely by hand without AI. The README also has a section on what I would do differently today.">
+                Konzolová aplikace v Pythonu pro správu studentů — oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">JSON</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/jancerny-dev/Evidence_studentu" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Svatební weby -->
+          <article class="project-card reveal">
+            <div class="project-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.2A4.8 4.8 0 0 0 17.2 4c-1.9 0-3.6 1-5.2 3C10.4 5 8.7 4 6.8 4A4.8 4.8 0 0 0 2 8.8c0 2 1.5 3.7 3 5.2l7 7z"/></svg>
+              <span class="thumb-badge" data-cs="Připravuji" data-en="In progress">Připravuji</span>
+            </div>
+            <div class="project-body">
+              <h3 data-cs="Svatební weby" data-en="Wedding websites">Svatební weby</h3>
+              <p data-cs="Weby na míru pro svatební den — pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. První z nich právě stavím: web pro vlastní svatbu."
+                 data-en="Custom websites for the big day — invitation, guest info, schedule, RSVP form and photo gallery in one place. Trilingual, with a gallery ordered by the time each photo was taken. I am building the first one right now: the website for my own wedding.">
+                Weby na míru pro svatební den — pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. První z nich právě stavím: web pro vlastní svatbu.
+              </p>
+              <div class="project-tags">
+                <span class="tag">HTML / CSS / JS</span><span class="tag" data-cs="Lokalizace" data-en="Localisation">Lokalizace</span><span class="tag">RSVP</span>
+              </div>
+              <div class="project-links">
+                <span style="font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 6px 0;" data-cs="Ukázka již brzy" data-en="Demo coming soon">Ukázka již brzy</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ GALERIE ═══════════ -->
+
+    <!-- ═══════════ KONTAKT ═══════════ -->
+    <section class="section" id="contact">
+      <div class="container">
+        <p class="section-label">ping me</p>
+        <h2 class="section-title reveal" data-cs="Kontakt" data-en="Contact">Kontakt</h2>
+        <p class="section-desc reveal"
+           data-cs="Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se — odpovídám rychle."
+           data-en="Got an offer, a question or an idea for collaboration? Reach out — I reply fast.">
+          Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se — odpovídám rychle.
+        </p>
+
+        <div class="contact-wrap">
+          <div class="contact-list">
+            <a class="contact-item reveal" href="mailto:Jan.cer@icloud.com">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+              <span>
+                <span class="lbl">E-mail</span><br />
+                <span class="val">Jan.cer@icloud.com</span>
+              </span>
+            </a>
+            <a class="contact-item reveal" href="https://www.linkedin.com/in/jan-%C4%8Dern%C3%BD-857b1014b/" target="_blank" rel="noopener">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></span>
+              <span>
+                <span class="lbl">LinkedIn</span><br />
+                <span class="val">/in/jan-černý</span>
+              </span>
+            </a>
+            <a class="contact-item reveal" href="https://github.com/jancerny-dev" target="_blank" rel="noopener">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.35.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.05.77 2.12v3.14c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg></span>
+              <span>
+                <span class="lbl">GitHub</span><br />
+                <span class="val">/jancerny-dev</span>
+              </span>
+            </a>
+          </div>
+
+          <div class="terminal contact-terminal reveal" aria-hidden="true">
+            <div class="terminal-bar">
+              <span class="dot-btn red"></span><span class="dot-btn yellow"></span><span class="dot-btn green"></span>
+              <span class="title">contact.sh</span>
+            </div>
+            <div class="terminal-body">
+              <div class="line cmd">./send_message.sh --to jan</div>
+              <div class="line out" data-cs="&gt; Připojuji se..." data-en="&gt; Connecting...">&gt; Připojuji se...</div>
+              <div class="line ok" data-cs="✔ Spojení navázáno" data-en="✔ Connection established">✔ Spojení navázáno</div>
+              <div class="line out" data-cs="&gt; Průměrná doba odpovědi: &lt; 24 h" data-en="&gt; Average response time: &lt; 24 h">&gt; Průměrná doba odpovědi: &lt; 24 h</div>
+              <div class="line cmd"><span class="caret"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════ LIGHTBOX ═══════════ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Náhled fotky">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Zavřít náhled">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="lightboxContent"></div>
+  </div>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer>
+    <div class="container">
+      <span>© <span id="year">2026</span> Jan Černý</span>
+      <span class="mono" data-cs="~ vyrobeno s kávou a zvědavostí ~" data-en="~ built with coffee and curiosity ~">~ vyrobeno s kávou a zvědavostí ~</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ══════════ TÉMA (světlé / tmavé) ══════════ */
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      root.dataset.theme = savedTheme;
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      root.dataset.theme = 'dark';
+    }
+    themeToggle.addEventListener('click', () => {
+      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', root.dataset.theme);
+    });
+
+    /* ══════════ JAZYK (CS / EN) ══════════ */
+    const langToggle = document.getElementById('langToggle');
+    let lang = localStorage.getItem('lang') || 'cs';
+
+    function applyLang() {
+      document.querySelectorAll('[data-cs]').forEach(el => {
+        const value = el.dataset[lang];
+        if (value !== undefined) el.textContent = value;
+      });
+      document.documentElement.lang = lang;
+      langToggle.textContent = lang === 'cs' ? 'EN' : 'CS';
+      document.title = lang === 'cs'
+        ? 'Jan Černý — Tester · Programátor · AI nadšenec'
+        : 'Jan Černý — Tester · Developer · AI enthusiast';
+    }
+    langToggle.addEventListener('click', () => {
+      lang = lang === 'cs' ? 'en' : 'cs';
+      localStorage.setItem('lang', lang);
+      applyLang();
+    });
+    applyLang();
+
+    /* ══════════ MOBILNÍ MENU ══════════ */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      })
+    );
+
+    /* ══════════ AKTIVNÍ ODKAZ V MENU ══════════ */
+    const sections = document.querySelectorAll('main section[id]');
+    const menuLinks = navLinks.querySelectorAll('a');
+    const activeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          menuLinks.forEach(a =>
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id)
+          );
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => activeObserver.observe(s));
+
+    /* ══════════ SCROLL REVEAL ══════════ */
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ══════════ POČÍTADLA STATISTIK ══════════ */
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const statsObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.count;
+        statsObserver.unobserve(el);
+        if (reducedMotion) { el.textContent = target + '+'; return; }
+        const start = performance.now();
+        (function tick(now) {
+          const p = Math.min((now - start) / 1100, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + '+';
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.stat .num').forEach(el => statsObserver.observe(el));
+
+    /* ══════════ PSANÍ V TERMINÁLU (hero) ══════════ */
+    const terminalLines = {
+      cs: [
+        { cls: 'cmd', text: 'whoami' },
+        { cls: 'out', text: 'Ing. Jan Černý, Ph.D. — QA / Integration Tester' },
+        { cls: 'cmd', text: 'cat zamereni.txt' },
+        { cls: 'out', text: 'integrační testování · API · Playwright · AI/LLM' },
+        { cls: 'cmd', text: './motto.sh' },
+        { cls: 'ok',  text: '✔ Vytrvalost otevírá cestu k úspěchu.' },
+      ],
+      en: [
+        { cls: 'cmd', text: 'whoami' },
+        { cls: 'out', text: 'Jan Černý, MSc., Ph.D. — QA / Integration Tester' },
+        { cls: 'cmd', text: 'cat focus.txt' },
+        { cls: 'out', text: 'integration testing · API · Playwright · AI/LLM' },
+        { cls: 'cmd', text: './motto.sh' },
+        { cls: 'ok',  text: '✔ Perseverance opens the path to success.' },
+      ],
+    };
+    const terminalBody = document.getElementById('terminalBody');
+    let typingToken = 0;
+
+    function renderTerminal() {
+      const token = ++typingToken;
+      const lines = terminalLines[lang] || terminalLines.cs;
+      terminalBody.innerHTML = '';
+      if (reducedMotion) {
+        lines.forEach(l => {
+          const div = document.createElement('div');
+          div.className = 'line ' + l.cls;
+          div.textContent = l.text;
+          terminalBody.appendChild(div);
+        });
+        terminalBody.insertAdjacentHTML('beforeend', '<div class="line cmd"><span class="caret"></span></div>');
+        return;
+      }
+      let i = 0;
+      function typeLine() {
+        if (token !== typingToken) return;
+        if (i >= lines.length) {
+          terminalBody.insertAdjacentHTML('beforeend', '<div class="line cmd"><span class="caret"></span></div>');
+          return;
+        }
+        const l = lines[i++];
+        const div = document.createElement('div');
+        div.className = 'line ' + l.cls;
+        terminalBody.appendChild(div);
+        let ch = 0;
+        (function typeChar() {
+          if (token !== typingToken) return;
+          div.textContent = l.text.slice(0, ++ch);
+          if (ch < l.text.length) {
+            setTimeout(typeChar, l.cls === 'cmd' ? 45 : 14);
+          } else {
+            setTimeout(typeLine, l.cls === 'cmd' ? 250 : 420);
+          }
+        })();
+      }
+      typeLine();
+    }
+    renderTerminal();
+    langToggle.addEventListener('click', renderTerminal);
+
+    /* ══════════ LIGHTBOX GALERIE ══════════ */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxClose = document.getElementById('lightboxClose');
+    let lastFocused = null;
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', () => {
+        lastFocused = item;
+        const img = item.querySelector('img');
+        if (img) {
+          lightboxContent.innerHTML = '<img src="' + img.src + '" alt="' + (img.alt || '') + '" />';
+        } else {
+          const name = item.querySelector('.gallery-ph span');
+          lightboxContent.innerHTML = '<div class="lightbox-ph">' + (name ? name.textContent : 'foto') + '</div>';
+        }
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lightboxClose.focus();
+      });
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
+
+    /* ══════════ ROK VE FOOTERU ══════════ */
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

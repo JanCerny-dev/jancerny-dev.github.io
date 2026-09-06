@@ -506,9 +506,12 @@
     }
 
     /* ══════════════════ PROJEKTY ══════════════════ */
+    /* Počet sloupců se řídí místem, ne pevnými zlomy — karta nikdy neklesne
+       pod 320 px. Při obsahu 1092 px vyjdou tři sloupce, kolem 800 px dva,
+       pod 660 px jeden. */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 22px;
     }
     .project-card {
@@ -755,7 +758,7 @@
       .hero .container { grid-template-columns: 1fr; gap: 48px; }
       .about-grid { grid-template-columns: 1fr; }
       .stats { grid-template-columns: repeat(3, 1fr); }
-      .projects-grid, .cert-grid { grid-template-columns: repeat(2, 1fr); }
+      .cert-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
       .section { padding: 72px 0; }
@@ -780,7 +783,7 @@
       .stat .num { font-size: 26px; }
     }
     @media (max-width: 480px) {
-      .projects-grid, .cert-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr; }
       .hero-cta .btn { width: 100%; justify-content: center; }
     }
   </style>

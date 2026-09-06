@@ -365,8 +365,8 @@
       overflow: hidden;
       border-radius: 63% 37% 44% 56% / 52% 46% 54% 48%;
       animation: otaceni 22s linear infinite;
-      /* barva pozadí fotky — pojistka, kdyby někde přece jen prosvitlo */
-      background: #e6e7e2;
+      /* barva pozadí fotky — pojistka pro okamžik, než se obrázek načte */
+      background: #f0e3b6;
     }
     /* Fotka se protáčí proti tvaru. Čtverec otočený o 45° pokryje jen 71 %
        plochy, takže by v krajních natočeních vykoukly jeho rovné hrany.
@@ -381,7 +381,14 @@
       display: block;
       animation: otaceni 22s linear infinite reverse;
       filter: saturate(.94) contrast(1.02);
+      transition: opacity var(--t);
     }
+    /* Světlá a tmavá verze fotky leží přes sebe a přepínají se průhledností.
+       display:none by restartoval animaci a fotka by se rozešla s tvarem. */
+    .photo-shape .foto-tmava { opacity: 0; }
+    [data-theme="dark"] .photo-shape { background: #665a28; }
+    [data-theme="dark"] .photo-shape .foto-svetla { opacity: 0; }
+    [data-theme="dark"] .photo-shape .foto-tmava { opacity: 1; }
     @keyframes otaceni { to { transform: rotate(360deg); } }
     @keyframes plavani {
       0%, 100% { transform: translateY(0); }
@@ -837,7 +844,8 @@
 
         <div class="hero-photo">
           <div class="photo-shape">
-            <img src="fotky/profil.jpg" alt="Jan Černý" />
+            <img class="foto-svetla" src="fotky/profil-svetly.jpg" alt="Jan Černý" />
+            <img class="foto-tmava" src="fotky/profil-tmavy.jpg" alt="" aria-hidden="true" />
           </div>
 
         </div>

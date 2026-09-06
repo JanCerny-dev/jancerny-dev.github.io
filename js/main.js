@@ -24,8 +24,8 @@ function applyLang() {
   document.documentElement.lang = lang;
   langToggle.textContent = lang === 'cs' ? 'EN' : 'CS';
   document.title = lang === 'cs'
-    ? 'Jan Černý — Tester · Programátor · AI nadšenec'
-    : 'Jan Černý — Tester · Developer · AI enthusiast';
+    ? 'Jan Černý — QA a vývoj'
+    : 'Jan Černý — QA & dev';
 }
 langToggle.addEventListener('click', () => {
   lang = lang === 'cs' ? 'en' : 'cs';

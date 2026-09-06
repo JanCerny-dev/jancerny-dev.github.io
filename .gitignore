@@ -1,3 +1,7 @@
 .claude/
 .DS_Store
 Thumbs.db
+
+# interni poznamky k projektu, na web nepatri
+ZMENY-A-DALSI-KROKY.md
+*.md

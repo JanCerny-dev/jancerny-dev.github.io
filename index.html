@@ -238,9 +238,17 @@
     .hero .container {
       position: relative;
       display: grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: 1.15fr .85fr;
       gap: 64px;
       align-items: center;
+    }
+    .hero-photo {
+      /* width je nutná: s "margin-inline: auto" se položka mřížky neroztáhne
+         a smrskla by se na obsah, který je nulový (obrázek je pozicovaný absolutně) */
+      width: 100%;
+      max-width: 340px;
+      margin-inline: auto;
+      animation: plavani 6s ease-in-out infinite;
     }
     .hero-badge {
       display: inline-flex;
@@ -271,7 +279,14 @@
     }
     .hero h1 .accent { color: var(--accent); }
     .hero-sub { color: var(--muted); font-size: 18px; max-width: 60ch; margin-bottom: 36px; text-wrap: pretty; }
-    .typed-line { color: var(--accent); }
+    /* Řádek si drží výšku, i když je text krátký nebo se zrovna maže —
+       jinak by se hlavička při každé výměně roztahovala a smršťovala. */
+    .typed-line {
+      color: var(--accent);
+      display: inline-block;
+      min-height: 1.05em;
+      white-space: nowrap;
+    }
     .caret {
       display: inline-block;
       width: .58ch;
@@ -336,28 +351,55 @@
     }
 
     /* ══════════════════ O MNĚ ══════════════════ */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 56px;
-      align-items: start;
+    .about-grid { max-width: 74ch; }
+    /* Kudy jsem šel v IT */
+    .kariera { margin-top: 34px; }
+    .kariera h3 {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 14px;
     }
-    /* Fotka — nahraď <div class="photo-ph"> vlastním <img> */
-    /* Tri nezavisle pohyby: obal plave nahoru dolu, tvar se otaci dokola,
-       fotka se otaci proti nemu, aby zustala rovne. */
-    .about-photo {
-      max-width: 360px;
-      margin-inline: auto;
-      animation: plavani 6s ease-in-out infinite;
+    .kariera ol { list-style: none; display: grid; gap: 14px; }
+    .kariera li {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 16px;
+      padding-left: 16px;
+      border-left: 2px solid var(--border);
+    }
+    .kariera li:first-child { border-left-color: var(--accent); }
+    .kariera .obdobi {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .kariera .role { font-weight: 600; }
+    .kariera .kde { font-size: 14px; color: var(--muted); }
+    @media (max-width: 560px) {
+      .kariera li { grid-template-columns: 1fr; gap: 2px; }
     }
     .photo-shape {
+      position: relative;
+      width: 100%;
       aspect-ratio: 1 / 1;
       overflow: hidden;
       border-radius: 63% 37% 44% 56% / 52% 46% 54% 48%;
       animation: otaceni 22s linear infinite;
+      /* barva pozadí fotky — pojistka, kdyby někde přece jen prosvitlo */
+      background: #e6e7e2;
     }
+    /* Fotka se protáčí proti tvaru. Čtverec otočený o 45° pokryje jen 71 %
+       plochy, takže by v krajních natočeních vykoukly jeho rovné hrany.
+       Proto je zvětšená na 145 % a vycentrovaná. */
     .photo-shape img {
-      width: 100%; height: 100%;
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 145%; height: 145%;
+      max-width: none;          /* přebíjí globální img { max-width: 100% } */
+      margin: -72.5% 0 0 -72.5%;
       object-fit: cover;
       display: block;
       animation: otaceni 22s linear infinite reverse;
@@ -369,25 +411,8 @@
       50%      { transform: translateY(-12px); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .about-photo, .photo-shape, .photo-shape img { animation: none; }
+      .hero-photo, .photo-shape, .photo-shape img { animation: none; }
     }
-    .photo-ph {
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      background:
-        radial-gradient(circle at 30% 20%, var(--accent-soft), transparent 60%),
-        var(--surface);
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      text-align: center;
-      padding: 20px;
-    }
-    .photo-ph svg { width: 44px; height: 44px; opacity: .5; }
     .about-text p { color: var(--muted); margin-bottom: 18px; }
     .about-text p strong { color: var(--text); }
 
@@ -746,7 +771,6 @@
     @media (max-width: 1024px) {
       .hero .container { grid-template-columns: 1fr; gap: 48px; }
       .about-grid { grid-template-columns: 1fr; }
-      .about-photo { max-width: 340px; }
       .projects-grid, .cert-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
@@ -814,10 +838,6 @@
     <section class="hero">
       <div class="container">
         <div>
-          <span class="hero-badge">
-            <span class="dot" aria-hidden="true"></span>
-            <span data-cs="QA / Integration Tester @ Trask Solutions" data-en="QA / Integration Tester @ Trask Solutions">QA / Integration Tester @ Trask Solutions</span>
-          </span>
           <h1>
             <span data-cs="Ahoj, jsem" data-en="Hi, I'm">Ahoj, jsem</span> <span class="accent">Jan&nbsp;Černý</span>.<br />
             <span class="typed-line"><span id="typed"></span><span class="caret" aria-hidden="true"></span></span>
@@ -838,14 +858,10 @@
           </div>
         </div>
 
-        <div class="terminal" aria-hidden="true">
-          <div class="terminal-bar">
-            <span class="title">jan@portfolio: ~</span>
-            <span class="win-btns" aria-hidden="true">
-              <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">×</span>
-            </span>
+        <div class="hero-photo">
+          <div class="photo-shape">
+            <img src="fotky/profil.jpg" alt="Jan Černý" />
           </div>
-          <div class="terminal-body" id="terminalBody"></div>
         </div>
       </div>
     </section>
@@ -857,11 +873,6 @@
         <h2 class="section-title reveal" data-cs="O mně" data-en="About me">O mně</h2>
 
         <div class="about-grid">
-          <div class="about-photo reveal">
-            <div class="photo-shape">
-              <img src="fotky/profil.jpg" alt="Jan Černý" loading="lazy" />
-            </div>
-          </div>
 
           <div class="about-text reveal">
             <p data-cs="Jsem Ing. Jan Černý, Ph.D. — do IT jsem přešel z technického světa. Vystudoval jsem ČZU v Praze (zemědělská technika se zaměřením na jakost) a doktorát z energetiky, školil jsem CAD/CAM software od Autodesku a učil technickou dokumentaci a hydromechaniku."
@@ -876,6 +887,34 @@
                data-en="My motto: 'Perseverance opens the path to success.' I keep learning every week outside working hours — heading towards test automation, AI agents and the ability to take my own project from idea to delivery.">
               Moje motto: „Vytrvalost otevírá cestu k úspěchu.“ Mimo pracovní dobu se každý týden vzdělávám — směřuji k automatizovanému testování, AI agentům a schopnosti dotáhnout vlastní projekt od nápadu po realizaci.
             </p>
+
+
+            <div class="kariera">
+              <h3 data-cs="kudy jsem šel v IT" data-en="my path in IT">kudy jsem šel v IT</h3>
+              <ol>
+                <li>
+                  <span class="obdobi">2025 — dosud</span>
+                  <span>
+                    <span class="role" data-cs="Test analytik" data-en="Test analyst">Test analytik</span><br />
+                    <span class="kde" data-cs="Trask Solutions — integrační testování v pojišťovnictví, předtím QA firemní bankovní aplikace" data-en="Trask Solutions — integration testing in insurance, previously QA on a corporate banking application">Trask Solutions — integrační testování v pojišťovnictví, předtím QA firemní bankovní aplikace</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="obdobi">2025</span>
+                  <span>
+                    <span class="role" data-cs="Rekvalifikace" data-en="Retraining">Rekvalifikace</span><br />
+                    <span class="kde" data-cs="ITnetwork — Tvorba www aplikací, 193 hodin, akreditace MŠMT" data-en="ITnetwork — Web Application Development, 193 hours, accredited by the Ministry of Education">ITnetwork — Tvorba www aplikací, 193 hodin, akreditace MŠMT</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="obdobi" data-cs="do 2024" data-en="until 2024">do 2024</span>
+                  <span>
+                    <span class="role" data-cs="Předtím: technika a výuka" data-en="Before that: engineering and teaching">Předtím: technika a výuka</span><br />
+                    <span class="kde" data-cs="Ph.D. z energetiky, výpočty proudění v Ansysu, školitel CAD u Autodesku, výuka na ČZU" data-en="Ph.D. in power engineering, CFD simulations in Ansys, Autodesk CAD trainer, teaching at CULS">Ph.D. z energetiky, výpočty proudění v Ansysu, školitel CAD u Autodesku, výuka na ČZU</span>
+                  </span>
+                </li>
+              </ol>
+            </div>
 
             <div class="stats">
               <div class="stat">
@@ -1377,9 +1416,9 @@
     const typed = document.getElementById('typed');
     const VETY = {
       cs: ['testuju software', 'píšu v Pythonu', 'stavím AI agenty',
-           'automatizuju v Playwrightu', 'hledám chyby dřív než uživatelé'],
+           'automatizuju testy', 'hledám chyby'],
       en: ['I test software', 'I write Python', 'I build AI agents',
-           'I automate with Playwright', 'I find bugs before users do']
+           'I automate tests', 'I find bugs']
     };
     const bezPohybu = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1473,69 +1512,6 @@
       });
     }, { threshold: 0.6 });
     document.querySelectorAll('.stat .num').forEach(el => statsObserver.observe(el));
-
-    /* ══════════ PSANÍ V TERMINÁLU (hero) ══════════ */
-    const terminalLines = {
-      cs: [
-        { cls: 'cmd', text: 'whoami' },
-        { cls: 'out', text: 'Ing. Jan Černý, Ph.D. — QA / Integration Tester' },
-        { cls: 'cmd', text: 'cat zamereni.txt' },
-        { cls: 'out', text: 'integrační testování · API · Playwright · AI/LLM' },
-        { cls: 'cmd', text: './motto.sh' },
-        { cls: 'ok',  text: '✔ Vytrvalost otevírá cestu k úspěchu.' },
-      ],
-      en: [
-        { cls: 'cmd', text: 'whoami' },
-        { cls: 'out', text: 'Jan Černý, MSc., Ph.D. — QA / Integration Tester' },
-        { cls: 'cmd', text: 'cat focus.txt' },
-        { cls: 'out', text: 'integration testing · API · Playwright · AI/LLM' },
-        { cls: 'cmd', text: './motto.sh' },
-        { cls: 'ok',  text: '✔ Perseverance opens the path to success.' },
-      ],
-    };
-    const terminalBody = document.getElementById('terminalBody');
-    let typingToken = 0;
-
-    function renderTerminal() {
-      const token = ++typingToken;
-      const lines = terminalLines[lang] || terminalLines.cs;
-      terminalBody.innerHTML = '';
-      if (reducedMotion) {
-        lines.forEach(l => {
-          const div = document.createElement('div');
-          div.className = 'line ' + l.cls;
-          div.textContent = l.text;
-          terminalBody.appendChild(div);
-        });
-        terminalBody.insertAdjacentHTML('beforeend', '<div class="line cmd"><span class="caret"></span></div>');
-        return;
-      }
-      let i = 0;
-      function typeLine() {
-        if (token !== typingToken) return;
-        if (i >= lines.length) {
-          terminalBody.insertAdjacentHTML('beforeend', '<div class="line cmd"><span class="caret"></span></div>');
-          return;
-        }
-        const l = lines[i++];
-        const div = document.createElement('div');
-        div.className = 'line ' + l.cls;
-        terminalBody.appendChild(div);
-        let ch = 0;
-        (function typeChar() {
-          if (token !== typingToken) return;
-          div.textContent = l.text.slice(0, ++ch);
-          if (ch < l.text.length) {
-            setTimeout(typeChar, l.cls === 'cmd' ? 45 : 14);
-          } else {
-            setTimeout(typeLine, l.cls === 'cmd' ? 250 : 420);
-          }
-        })();
-      }
-      typeLine();
-    }
-    renderTerminal();
-    langToggle.addEventListener('click', renderTerminal);
 
     /* ══════════ LIGHTBOX GALERIE ══════════ */
     const lightbox = document.getElementById('lightbox');

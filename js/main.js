@@ -1,16 +1,27 @@
-/* ══════════ TÉMA (světlé / tmavé) ══════════ */
+/* ══════════ TÉMA (zatím jen tmavé) ══════════ */
+/* Světlá varianta se doladí později. Do té doby je web natvrdo tmavý:
+   přepínač je v HTML schovaný přes hidden a uložená volba se ignoruje,
+   aby se komu zůstalo v localStorage 'light', neukázal polohotový režim.
+   Zpět se to pustí odebráním hidden u #themeToggle a řádku ZAMCENO_NA_TMAVE. */
+const ZAMCENO_NA_TMAVE = true;
+
 const root = document.documentElement;
 const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-  root.dataset.theme = savedTheme;
-} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+
+if (ZAMCENO_NA_TMAVE) {
   root.dataset.theme = 'dark';
+} else {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    root.dataset.theme = savedTheme;
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.dataset.theme = 'dark';
+  }
+  themeToggle.addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', root.dataset.theme);
+  });
 }
-themeToggle.addEventListener('click', () => {
-  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('theme', root.dataset.theme);
-});
 
 /* ══════════ JAZYK (CS / EN) ══════════ */
 const langToggle = document.getElementById('langToggle');

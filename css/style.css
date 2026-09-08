@@ -14,6 +14,9 @@
   --accent-soft: rgba(175, 58, 3, 0.09);
   --accent-glow: transparent;
   --ok:          #79740e;   /* gruvbox green — pro ✔ v terminálu */
+  /* Barva pod fotkou v hlavičce. Fotka má vlastní pozadí, tohle se ukáže
+     jen na okamžik, než se načte — má proto sedět s pozadím fotky. */
+  --foto-pozadi: #002336;
   /* stíny tónované do teplé, ne neutrálně černé */
   --shadow:      0 1px 2px rgba(60, 56, 54, .10), 0 6px 16px rgba(60, 56, 54, .08);
   --shadow-lg:   0 3px 8px rgba(60, 56, 54, .12), 0 12px 32px rgba(60, 56, 54, .10);
@@ -40,6 +43,7 @@
   --ok:          #b8bb26;   /* gruvbox green */
   --shadow:      0 1px 2px rgba(20, 18, 17, .5), 0 6px 16px rgba(20, 18, 17, .4);
   --shadow-lg:   0 3px 8px rgba(20, 18, 17, .6), 0 12px 32px rgba(20, 18, 17, .5);
+  --foto-pozadi: #002336;   /* pozadí ateliérové fotky, jen než se načte */
 }
 
 /* ── Reset & základ ── */
@@ -107,7 +111,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   cursor: pointer;
 }
 .btn svg { width: 18px; height: 18px; }
-.btn-primary { background: var(--accent-hi); color: #fff; }
+.btn-primary { background: var(--accent); color: #fff; }
 [data-theme="dark"] .btn-primary { color: #282828; }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .btn-outline { border-color: var(--border); color: var(--text); background: var(--surface); }
@@ -189,6 +193,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .icon-btn:hover { color: var(--accent); border-color: var(--accent-hi); transform: translateY(-1px); }
 .icon-btn svg { width: 19px; height: 19px; }
+/* [hidden] musí přebít display:inline-flex výše — dokud je web jen tmavý,
+   je tím skrytý přepínač režimu. */
+.icon-btn[hidden] { display: none; }
 /* přepínání ikon slunce/měsíc */
 [data-theme="light"] .icon-moon { display: block; }
 [data-theme="light"] .icon-sun  { display: none; }
@@ -354,8 +361,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   overflow: hidden;
   border-radius: 63% 37% 44% 56% / 52% 46% 54% 48%;
   animation: otaceni 22s linear infinite;
-  /* barva pozadí fotky — pojistka pro okamžik, než se obrázek načte */
-  background: #f0e3b6;
+  background: var(--foto-pozadi);
+  transition: background var(--t);
 }
 /* Fotka se protáčí proti tvaru. Čtverec otočený o 45° pokryje jen 71 %
    plochy, takže by v krajních natočeních vykoukly jeho rovné hrany.
@@ -370,14 +377,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: block;
   animation: otaceni 22s linear infinite reverse;
   filter: saturate(.94) contrast(1.02);
-  transition: opacity var(--t);
 }
-/* Světlá a tmavá verze fotky leží přes sebe a přepínají se průhledností.
-   display:none by restartoval animaci a fotka by se rozešla s tvarem. */
-.photo-shape .foto-tmava { opacity: 0; }
-[data-theme="dark"] .photo-shape { background: #665a28; }
-[data-theme="dark"] .photo-shape .foto-svetla { opacity: 0; }
-[data-theme="dark"] .photo-shape .foto-tmava { opacity: 1; }
 @keyframes otaceni { to { transform: rotate(360deg); } }
 @keyframes plavani {
   0%, 100% { transform: translateY(0); }
@@ -515,9 +515,10 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .project-card:hover { border-color: var(--accent-hi); transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 /* zvýrazněná karta — projekt, na který se aktuálně zaměřuji */
 .project-card.featured { border-color: var(--accent-hi); }
-.thumb-badge {
-  position: absolute;
-  top: 12px; right: 12px;
+/* Štítek stavu projektu. Dřív seděl v rohu náhledu, ten je odstraněný,
+   dokud nebudou skutečné obrázky. Teď stojí nad názvem. */
+.project-badge {
+  align-self: flex-start;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
@@ -528,24 +529,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background: var(--accent-hi);
   color: #fff;
 }
-[data-theme="dark"] .thumb-badge { color: #04141a; }
-/* Náhled projektu — nahraď vlastním <img src="..."> */
-.project-thumb {
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(circle at 70% 30%, var(--accent-soft), transparent 65%),
-    var(--surface);
-  border-bottom: 1px solid var(--border);
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  position: relative;
-  overflow: hidden;
-}
-.project-thumb svg { width: 36px; height: 36px; opacity: .45; }
+[data-theme="dark"] .project-badge { color: #04141a; }
 .project-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .project-body h3 { font-family: var(--font-head); font-size: 18px; font-weight: 600; }
 .project-body p { font-size: 14.5px; color: var(--muted); flex: 1; }
@@ -578,8 +562,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   backdrop-filter: blur(6px);
 }
 .lightbox.open { display: flex; }
-/* Chip s certifikátem se dá otevřít, chip bez něj ne — a je to poznat
-   i bez najetí myší: plný rámeček proti čárkovanému. */
+/* Chip s certifikátem se dá otevřít a pozná se to podle lupy za textem.
+   Chip bez certifikátu vypadá jako kterýkoli jiný chip na webu. */
 #certs a.chip::after {
   content: "";
   width: 11px; height: 11px;
@@ -590,12 +574,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   mask: var(--ikona-lupa) center / contain no-repeat;
 }
 #certs a.chip { cursor: pointer; color: var(--text); }
-#certs span.chip {
-  border-style: dashed;
-  color: var(--muted);
-  cursor: default;
-}
-#certs span.chip:hover { border-color: var(--border); background: transparent; transform: none; }
+/* Chip, ze kterého se nedá nic stáhnout, vypadá i po najetí stejně jako
+   chipy v sekci Technologie — tedy jako obyčejný .chip, bez zvýraznění. */
 .cert-note {
   font-size: 12.5px;
   font-family: var(--font-mono);

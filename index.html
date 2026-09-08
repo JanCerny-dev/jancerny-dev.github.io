@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs" data-theme="light">
+<html lang="cs" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +54,9 @@
 
       <div class="nav-actions">
         <button class="icon-btn lang-btn" id="langToggle" aria-label="Přepnout jazyk / Switch language">EN</button>
-        <button class="icon-btn" id="themeToggle" aria-label="Přepnout světlý a tmavý režim">
+        <!-- Světlý režim je zatím schovaný, doladí se později. Tlačítko zůstává
+             v kódu i s obsluhou v main.js, stačí odebrat hidden. -->
+        <button class="icon-btn" id="themeToggle" hidden aria-label="Přepnout světlý a tmavý režim">
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         </button>
@@ -75,9 +77,9 @@
             <span class="typed-line"><span id="typed"></span><span class="caret" aria-hidden="true"></span></span>
           </h1>
           <p class="hero-sub"
-             data-cs="Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví — od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl."
-             data-en="I test web and mobile applications in banking and insurance — from test analysis through API and integration testing to Playwright automation. I enjoy finding bugs before users do and bringing AI into everything where it makes sense.">
-            Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví — od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl.
+             data-cs="Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví, od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl."
+             data-en="I test web and mobile applications in banking and insurance, from test analysis through API and integration testing to Playwright automation. I enjoy finding bugs before users do and bringing AI into everything where it makes sense.">
+            Testuju webové a mobilní aplikace v bankovnictví a pojišťovnictví, od test analýzy přes API a integrační testy až po automatizaci v Playwrightu. Baví mě hledat chyby dřív, než je najdou uživatelé, a zapojovat AI všude, kde dává smysl.
           </p>
           <div class="hero-cta">
             <a href="#projects" class="btn btn-primary">
@@ -92,8 +94,10 @@
 
         <div class="hero-photo">
           <div class="photo-shape">
-            <img class="foto-svetla" src="fotky/profil-svetly.jpg" alt="Jan Černý" />
-            <img class="foto-tmava" src="fotky/profil-tmavy.jpg" alt="" aria-hidden="true" />
+            <!-- Náhradní ateliérová fotka i s vlastním pozadím (#002336).
+                 Token --foto-pozadi v css/style.css drží tutéž barvu, aby tvar
+                 neproblikl, než se obrázek načte. -->
+            <img src="fotky/profil-nahradni.jpg" alt="Jan Černý" width="1100" height="1100" />
           </div>
 
         </div>
@@ -109,24 +113,22 @@
         <div class="about-grid">
 
           <div class="about-text reveal">
-            <p data-cs="Jsem Ing. Jan Černý, Ph.D. — do IT jsem přešel z technického světa. Vystudoval jsem ČZU v Praze (zemědělská technika se zaměřením na jakost) a doktorát z energetiky, školil jsem CAD/CAM software od Autodesku a učil technickou dokumentaci a hydromechaniku."
-               data-en="I'm Jan Černý (MSc., Ph.D.) — I moved into IT from the engineering world. I graduated from CULS Prague (agricultural engineering with a focus on quality) with a doctorate in power engineering, trained people in Autodesk CAD/CAM software and taught technical documentation and hydromechanics.">
-              Jsem Ing. Jan Černý, Ph.D. — do IT jsem přešel z technického světa. Vystudoval jsem ČZU v Praze (zemědělská technika se zaměřením na jakost) a doktorát z energetiky, školil jsem CAD/CAM software od Autodesku a učil technickou dokumentaci a hydromechaniku.
+            <p data-cs="Ověřování výsledků mě drží od začátku kariéry. Osm let jsem počítal MKP a CFD simulace, hlavně proudění v odstředivých čerpadlech, a srovnával, jestli výpočet odpovídá tomu, co se naměří na skutečném stroji. Souběžně jsem školil inženýry v CAD a výpočtových nástrojích po firmách po republice a učil technickou dokumentaci a hydromechaniku na ČZU. Vznikly z toho tři recenzované články a disertace."
+               data-en="Verifying results has kept me busy since the start of my career. For eight years I ran FEM and CFD simulations, mostly flow in centrifugal pumps, and checked whether the calculation matched what gets measured on a real machine. Alongside that I trained engineers in CAD and simulation tools at companies around the country and taught technical documentation and hydromechanics at CULS Prague. It produced three peer-reviewed papers and a doctoral thesis.">
+              Ověřování výsledků mě drží od začátku kariéry. Osm let jsem počítal MKP a CFD simulace, hlavně proudění v odstředivých čerpadlech, a srovnával, jestli výpočet odpovídá tomu, co se naměří na skutečném stroji. Souběžně jsem školil inženýry v CAD a výpočtových nástrojích po firmách po republice a učil technickou dokumentaci a hydromechaniku na ČZU. Vznikly z toho tři recenzované články a disertace.
             </p>
-            <p data-cs="Po rekvalifikaci na tvorbu webových aplikací (ITnetwork) jsem nastoupil jako tester do Trask Solutions. Prošel jsem funkčním testováním webové a mobilní bankovní aplikace — od manuálních testů přes test analýzy až po E2E testy a roli znalostního experta pro business. Dnes dělám integrační testování v pojišťovnictví: API testy v Insomnii, analýzu logů v Kibaně a ve volných chvílích stavím Playwright automatizaci."
-               data-en="After retraining in web application development (ITnetwork) I joined Trask Solutions as a tester. I went through functional testing of a web and mobile banking application — from manual tests through test analyses to E2E tests and a subject-matter-expert role for the business side. Today I do integration testing in insurance: API testing in Insomnia, log analysis in Kibana, and I'm building Playwright automation in my spare moments.">
-              Po rekvalifikaci na tvorbu webových aplikací (ITnetwork) jsem nastoupil jako tester do Trask Solutions. Prošel jsem funkčním testováním webové a mobilní bankovní aplikace — od manuálních testů přes test analýzy až po E2E testy a roli znalostního experta pro business. Dnes dělám integrační testování v pojišťovnictví: API testy v Insomnii, analýzu logů v Kibaně a ve volných chvílích stavím Playwright automatizaci.
+            <p data-cs="Dnes jsem test analytik v Trask Solutions. Začínal jsem na bankovní aplikaci pro firemní klienty v dvacetičlenném QA týmu, teď dělám integrační testování klientské zóny pojišťovací skupiny. Píšu API testy nad Swagger dokumentací, čtu logy, pracuju se sekvenčními diagramy a spravuju testovací data. Většina práce je domluva s vývojáři, analytiky a business stranou, protože zadání bývá hotové až během testování."
+               data-en="Today I am a test analyst at Trask Solutions. I started on a corporate banking application in a twenty-strong QA team and now I do integration testing on the client zone of an insurance group. I write API tests against Swagger documentation, read logs, work with sequence diagrams and manage test data. Most of the job is agreeing things with developers, analysts and the business side, because the specification tends to get finished during testing.">
+              Dnes jsem test analytik v Trask Solutions. Začínal jsem na bankovní aplikaci pro firemní klienty v dvacetičlenném QA týmu, teď dělám integrační testování klientské zóny pojišťovací skupiny. Píšu API testy nad Swagger dokumentací, čtu logy, pracuju se sekvenčními diagramy a spravuju testovací data. Většina práce je domluva s vývojáři, analytiky a business stranou, protože zadání bývá hotové až během testování.
             </p>
-            <p data-cs="Moje motto: „Vytrvalost otevírá cestu k úspěchu.“ Mimo pracovní dobu se každý týden vzdělávám — směřuji k automatizovanému testování, AI agentům a schopnosti dotáhnout vlastní projekt od nápadu po realizaci."
-               data-en="My motto: 'Perseverance opens the path to success.' I keep learning every week outside working hours — heading towards test automation, AI agents and the ability to take my own project from idea to delivery.">
-              Moje motto: „Vytrvalost otevírá cestu k úspěchu.“ Mimo pracovní dobu se každý týden vzdělávám — směřuji k automatizovanému testování, AI agentům a schopnosti dotáhnout vlastní projekt od nápadu po realizaci.
+            <p data-cs="Ve dne testuju, večer si stavím vlastní nástroje. Nejdál je Šmoula, agent, který mi běží nonstop na vlastním serveru a ovládám ho z mobilu přes Telegram. Za prvních 78 hodin provozu 5 557 volání, žádný pád, prostoj pod minutu. Baví mě rozumět tomu, jak věci fungují pod povrchem, a nechat si názor ověřit od někoho, kdo ví víc."
+               data-en="I test by day and build my own tools in the evening. The furthest along is Šmoula, an agent that runs non-stop on my own server and that I control from my phone over Telegram. In its first 78 hours it handled 5,557 calls, no crashes, downtime under a minute. I like understanding how things work underneath, and having my opinion checked by someone who knows more.">
+              Ve dne testuju, večer si stavím vlastní nástroje. Nejdál je Šmoula, agent, který mi běží nonstop na vlastním serveru a ovládám ho z mobilu přes Telegram. Za prvních 78 hodin provozu 5 557 volání, žádný pád, prostoj pod minutu. Baví mě rozumět tomu, jak věci fungují pod povrchem, a nechat si názor ověřit od někoho, kdo ví víc.
             </p>
-
-
           </div>
           <div class="stats">
             <div class="stat">
-              <div class="num" data-count="10">0</div>
+              <div class="num" data-count="17" data-suffix="">0</div>
               <div class="lbl" data-cs="certifikátů" data-en="certificates">certifikátů</div>
             </div>
             <div class="stat">
@@ -259,7 +261,7 @@
               <a class="chip" href="certifikace/Certifikat_Git%20(1).pdf" target="_blank" data-img="certifikace/nahledy/certifikat-git-1.jpg" data-mini="certifikace/mini/certifikat-git-1.jpg">Git</a>
               <a class="chip" href="certifikace/Certifikat_Best_practices_pro_navrh_softwaru%20(1).pdf" target="_blank" data-img="certifikace/nahledy/certifikat-best-practices-pro-navrh-softwaru-1.jpg" data-mini="certifikace/mini/certifikat-best-practices-pro-navrh-softwaru-1.jpg" data-cs="Best practices návrhu SW" data-en="Software design best practices">Best practices návrhu SW</a>
             </div>
-            <p class="cert-note" data-cs="klikni na kurz — otevře se certifikát" data-en="click a course to open the certificate">klikni na kurz — otevře se certifikát</p>
+            <p class="cert-note" data-cs="klikni na kurz, otevře se certifikát" data-en="click a course to open the certificate">klikni na kurz, otevře se certifikát</p>
             <span class="year">2025</span>
           </div>
 
@@ -272,7 +274,7 @@
               <a class="chip" href="certifikace/Claude%20Code%20101%20Certifikát.pdf" target="_blank" data-img="certifikace/nahledy/claude-code-101-certifikat.jpg" data-mini="certifikace/mini/claude-code-101-certifikat.jpg">Claude Code 101</a>
               <a class="chip" href="certifikace/Claude%20Code%20in%20Action%20Certifikát.pdf" target="_blank" data-img="certifikace/nahledy/claude-code-in-action-certifikat.jpg" data-mini="certifikace/mini/claude-code-in-action-certifikat.jpg">Claude Code in Action</a>
             </div>
-            <p class="cert-note" data-cs="klikni na kurz — otevře se certifikát" data-en="click a course to open the certificate">klikni na kurz — otevře se certifikát</p>
+            <p class="cert-note" data-cs="klikni na kurz, otevře se certifikát" data-en="click a course to open the certificate">klikni na kurz, otevře se certifikát</p>
             <span class="year">2026</span>
           </div>
 
@@ -315,18 +317,15 @@
         <div class="projects-grid">
           <!-- Šmoula — nejsilnější položka -->
           <article class="project-card featured reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
-              <span class="thumb-badge" data-cs="Běží nonstop" data-en="Running 24/7">Běží nonstop</span>
-            </div>
             <div class="project-body">
-              <h3 data-cs="Šmoula — osobní AI agent" data-en="Šmoula — personal AI agent">Šmoula — osobní AI agent</h3>
-              <p data-cs="Agent, který mi běží nepřetržitě na vlastním serveru a ovládám ho z telefonu přes Telegram. Telegram → Oracle Cloud → Claude Code v headless režimu → Git repozitář jako dlouhodobá paměť. Osm systemd služeb, třídění pošty, ranní souhrn, import dat z chytré váhy a lovec volných ARM instancí s adaptivním zpomalováním proti rate-limitu."
-                 data-en="An agent running non-stop on my own server, controlled from my phone via Telegram. Telegram → Oracle Cloud → headless Claude Code → a Git repository as long-term memory. Eight systemd services, mail triage, morning digest, smart-scale data import and a hunter for free ARM instances with adaptive backoff against rate limits.">
-                Agent, který mi běží nepřetržitě na vlastním serveru a ovládám ho z telefonu přes Telegram. Telegram → Oracle Cloud → Claude Code v headless režimu → Git repozitář jako dlouhodobá paměť. Osm systemd služeb, třídění pošty, ranní souhrn, import dat z chytré váhy a lovec volných ARM instancí s adaptivním zpomalováním proti rate-limitu.
+              <span class="project-badge" data-cs="Běží nonstop" data-en="Running 24/7">Běží nonstop</span>
+              <h3 data-cs="Šmoula, osobní AI agent" data-en="Šmoula, a personal AI agent">Šmoula, osobní AI agent</h3>
+              <p data-cs="Agent, kterého ovládám z mobilu a používám denně. Telegram, server v cloudu, Claude Code v headless režimu a privátní Git repozitář jako dlouhodobá paměť v Markdownu. Umí chat s pamětí napříč konverzacemi, kalorický deník, třídění pošty a ranní souhrn. Fotku z chytré váhy mu pošlu e-mailem a on z ní vytáhne naměřené hodnoty. Běží na tom osm služeb a časovačů pod systemd, každá s automatickým restartem. Součástí je skript, který hlídá volné ARM instance na Oracle Cloudu a sám si reguluje tempo dotazů podle toho, jestli narazil na limit. Za prvních 78 hodin provozu 5 557 volání, 43 zdržení kvůli limitu, žádný pád a prostoj pod jednu minutu. Veřejný je nástroj, ne jeho obsah. Paměť agenta zůstává v privátním repozitáři."
+                 data-en="An agent I control from my phone and use every day. Telegram, a server in the cloud, headless Claude Code and a private Git repository as long-term memory in Markdown. It handles chat with memory across conversations, a calorie diary, mail triage and a morning digest. I e-mail it a photo from my smart scale and it reads the measurements off it. Eight services and timers run under systemd, each with an automatic restart. One of them watches for free ARM instances on Oracle Cloud and adjusts its own request rate depending on whether it hit a limit. Over the first 78 hours that meant 5,557 calls, 43 rate-limit backoffs, no crashes and under a minute of downtime in total. The tool is public, its content is not. The agent memory stays in a private repository.">
+                Agent, kterého ovládám z mobilu a používám denně. Telegram, server v cloudu, Claude Code v headless režimu a privátní Git repozitář jako dlouhodobá paměť v Markdownu. Umí chat s pamětí napříč konverzacemi, kalorický deník, třídění pošty a ranní souhrn. Fotku z chytré váhy mu pošlu e-mailem a on z ní vytáhne naměřené hodnoty. Běží na tom osm služeb a časovačů pod systemd, každá s automatickým restartem. Součástí je skript, který hlídá volné ARM instance na Oracle Cloudu a sám si reguluje tempo dotazů podle toho, jestli narazil na limit. Za prvních 78 hodin provozu 5 557 volání, 43 zdržení kvůli limitu, žádný pád a prostoj pod jednu minutu. Veřejný je nástroj, ne jeho obsah. Paměť agenta zůstává v privátním repozitáři.
               </p>
               <div class="project-tags">
-                <span class="tag">Python</span><span class="tag">Claude Code</span><span class="tag">Linux / systemd</span><span class="tag">Oracle Cloud</span><span class="tag">Telegram API</span>
+                <span class="tag">Python</span><span class="tag">Claude Code</span><span class="tag">Linux / systemd</span><span class="tag">Oracle Cloud</span><span class="tag">Telegram API</span><span class="tag">Git</span>
               </div>
               <div class="project-links">
                 <a href="https://github.com/jancerny-dev/Smoula" target="_blank" rel="noopener" aria-label="GitHub repozitář projektu">
@@ -339,14 +338,11 @@
 
           <!-- Účtenky -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-            </div>
             <div class="project-body">
-              <h3 data-cs="Účtenky — fakturační systém" data-en="Účtenky — invoicing system">Účtenky — fakturační systém</h3>
-              <p data-cs="Full-stack aplikace: REST API v Django REST Frameworku, klient v Reactu a Vite, grafy tržeb po měsících a letech. K tomu E2E testy v Playwrightu podle Page Object Modelu a spuštění v Dockeru jedním příkazem. Osoby se nemažou — úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení."
-                 data-en="A full-stack application: a REST API in Django REST Framework, a React and Vite client, revenue charts by month and year. Plus Playwright E2E tests using the Page Object Model and a single-command Docker setup. People are never deleted — both editing and deleting only hide the original record, so invoices keep pointing at the data valid when they were issued.">
-                Full-stack aplikace: REST API v Django REST Frameworku, klient v Reactu a Vite, grafy tržeb po měsících a letech. K tomu E2E testy v Playwrightu podle Page Object Modelu a spuštění v Dockeru jedním příkazem. Osoby se nemažou — úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení.
+              <h3 data-cs="Fakturační systém" data-en="Invoicing system">Fakturační systém</h3>
+              <p data-cs="Evidence osob a faktur. REST API v Django REST Frameworku s agregacemi pro statistiky a grafy, klient v Reactu a Vite, E2E testy v Playwrightu podle Page Object Modelu a spuštění celé aplikace jedním příkazem přes Docker Compose, s vícefázovým buildem klienta a databází v pojmenovaném volume. Osoby se nemažou. Úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení."
+                 data-en="A register of people and invoices. A REST API in Django REST Framework with aggregations for statistics and charts, a React and Vite client, Playwright E2E tests using the Page Object Model and a one-command start through Docker Compose, with a multi-stage client build and the database in a named volume. People are never deleted. Both editing and deleting only hide the original record, so invoices keep pointing at the data valid when they were issued.">
+                Evidence osob a faktur. REST API v Django REST Frameworku s agregacemi pro statistiky a grafy, klient v Reactu a Vite, E2E testy v Playwrightu podle Page Object Modelu a spuštění celé aplikace jedním příkazem přes Docker Compose, s vícefázovým buildem klienta a databází v pojmenovaném volume. Osoby se nemažou. Úprava i smazání jen schová původní záznam, aby faktury dál odkazovaly na údaje platné v době vystavení.
               </p>
               <div class="project-tags">
                 <span class="tag">Django REST</span><span class="tag">React / Vite</span><span class="tag">Playwright</span><span class="tag">Docker</span>
@@ -362,17 +358,14 @@
 
           <!-- Klientská zóna pojišťoven -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            </div>
             <div class="project-body">
-              <h3 data-cs="Klientská zóna pojišťoven — integrační testování" data-en="Insurance client zone — integration testing">Klientská zóna pojišťoven — integrační testování</h3>
-              <p data-cs="Webová a mobilní klientská zóna velké pojišťovací skupiny pro hlášení pojistných událostí. API testy v Insomnii, analýza logů v Kibaně, práce se sekvenčními diagramy a základ Playwright automatizace."
-                 data-en="Web and mobile client zone of a major insurance group for reporting insurance claims. API testing in Insomnia, log analysis in Kibana, working with sequence diagrams and laying the groundwork for Playwright automation.">
-                Webová a mobilní klientská zóna velké pojišťovací skupiny pro hlášení pojistných událostí. API testy v Insomnii, analýza logů v Kibaně, práce se sekvenčními diagramy a základ Playwright automatizace.
+              <h3 data-cs="Klientská zóna pojišťovací skupiny" data-en="Insurance group client zone">Klientská zóna pojišťovací skupiny</h3>
+              <p data-cs="Webová a mobilní klientská zóna pro hlášení pojistných událostí, český projekt v agilním prostředí. Dělám integrační testování mikroslužeb proti databázím. Píšu API testy nad Swagger dokumentací, analyzuju logy, pracuju se sekvenčními diagramy, spravuju testovací data přes API a zpracovávám defekty eskalované klientem. Co se opakuje, zkouším zautomatizovat. Napsal jsem si smoke testy v Playwrightu a nástroj, který přes API sbírá a třídí testovací data do lokální databáze. Psal jsem to pro sebe, tým to používá."
+                 data-en="The web and mobile client zone for reporting insurance claims, a Czech project in an agile setup. I do integration testing of microservices against databases. I write API tests over the Swagger documentation, analyse logs, work with sequence diagrams, manage test data through the API and handle defects escalated by the client. Whatever repeats, I try to automate. I wrote myself smoke tests in Playwright and a tool that collects and sorts test data into a local database over the API. I wrote it for myself and the team uses it.">
+                Webová a mobilní klientská zóna pro hlášení pojistných událostí, český projekt v agilním prostředí. Dělám integrační testování mikroslužeb proti databázím. Píšu API testy nad Swagger dokumentací, analyzuju logy, pracuju se sekvenčními diagramy, spravuju testovací data přes API a zpracovávám defekty eskalované klientem. Co se opakuje, zkouším zautomatizovat. Napsal jsem si smoke testy v Playwrightu a nástroj, který přes API sbírá a třídí testovací data do lokální databáze. Psal jsem to pro sebe, tým to používá.
               </p>
               <div class="project-tags">
-                <span class="tag" data-cs="Integrační testování" data-en="Integration testing">Integrační testování</span><span class="tag">Insomnia</span><span class="tag">Kibana</span><span class="tag">Playwright</span>
+                <span class="tag">Integrační testování</span><span class="tag">API testování</span><span class="tag">Swagger</span><span class="tag">Kibana</span><span class="tag">Playwright</span>
               </div>
               <div class="project-links">
                 <span style="font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 6px 0;">Trask Solutions · 2026</span>
@@ -382,17 +375,14 @@
 
           <!-- Firemní bankovní aplikace -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            </div>
             <div class="project-body">
-              <h3 data-cs="Firemní bankovní aplikace — QA" data-en="Corporate banking application — QA">Firemní bankovní aplikace — QA</h3>
-              <p data-cs="Funkční testování webové a mobilní aplikace velké banky pro firemní klienty — test analýzy, UAT a regresní testování, E2E testy pro business, testování notifikací a mobilních zařízení, role znalostního experta pro karty, termínované vklady a volné formuláře."
-                 data-en="Functional testing of a major bank's web and mobile application for corporate clients — test analyses, UAT and regression testing, E2E tests for the business side, notification and mobile device testing, subject-matter-expert role for cards, term deposits and free-form requests.">
-                Funkční testování webové a mobilní aplikace velké banky pro firemní klienty — test analýzy, UAT a regresní testování, E2E testy pro business, testování notifikací a mobilních zařízení, role znalostního experta pro karty, termínované vklady a volné formuláře.
+              <h3 data-cs="Bankovní aplikace pro firemní klienty" data-en="Corporate banking application">Bankovní aplikace pro firemní klienty</h3>
+              <p data-cs="Mezinárodní projekt, dvacetičlenný QA tým, agilní vývoj. Psal jsem test analýzy z Jira stories, návrhů ve Figmě a z Confluence. Později jsem zastupoval business analytika, dohledával chybějící zadání a psal Change Requesty za svou oblast. Když jsem zjistil, že business chápe jeden z produktů špatně, svolal jsem schůzky s bankovními experty, které to narovnaly. Na konci jsem psal end-to-end scénáře pro business, připravoval testovací data a školil business uživatele na testování mobilní aplikace na fyzických zařízeních. Dokumentace i komunikace byla v angličtině."
+                 data-en="An international project, a twenty-strong QA team, agile development. I wrote test analyses from Jira stories, Figma designs and Confluence. Later I stood in for the business analyst, chased missing requirements and wrote Change Requests for my own area. When I found that the business side had one of the products wrong, I called meetings with the bank experts that set it straight. Towards the end I wrote end-to-end scenarios for the business side, prepared test data and trained business users to test the mobile application on physical devices. All documentation and communication was in English.">
+                Mezinárodní projekt, dvacetičlenný QA tým, agilní vývoj. Psal jsem test analýzy z Jira stories, návrhů ve Figmě a z Confluence. Později jsem zastupoval business analytika, dohledával chybějící zadání a psal Change Requesty za svou oblast. Když jsem zjistil, že business chápe jeden z produktů špatně, svolal jsem schůzky s bankovními experty, které to narovnaly. Na konci jsem psal end-to-end scénáře pro business, připravoval testovací data a školil business uživatele na testování mobilní aplikace na fyzických zařízeních. Dokumentace i komunikace byla v angličtině.
               </p>
               <div class="project-tags">
-                <span class="tag" data-cs="Test analýza" data-en="Test analysis">Test analýza</span><span class="tag">UAT</span><span class="tag">Jira / Zephyr</span><span class="tag">E2E</span>
+                <span class="tag">Test analýza</span><span class="tag">UAT</span><span class="tag">Jira / Zephyr</span><span class="tag">E2E</span><span class="tag">Figma</span>
               </div>
               <div class="project-links">
                 <span style="font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 6px 0;">Trask Solutions · 2025–2026</span>
@@ -402,14 +392,11 @@
 
           <!-- ISTQB -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            </div>
             <div class="project-body">
               <h3 data-cs="Studijní příručka ISTQB s kontrolní sadou" data-en="ISTQB study guide with a verification suite">Studijní příručka ISTQB s kontrolní sadou</h3>
-              <p data-cs="Česká příručka k certifikaci ISTQB Foundation Level — šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. K němu jsem napsal kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl: ověřuje šest invariantů, z nichž hlavní je, že počet slov na stránce přesně odpovídá zdroji."
-                 data-en="A Czech study guide for the ISTQB Foundation Level certification — six chapters in three variants, over 87,000 words and 887 questions. The content is written in Word and a custom Python generator builds the site from it. I wrote a verification suite for it, because at that scale you cannot spot a lost section by eye: it checks six invariants, the main one being that the word count on each page exactly matches the source.">
-                Česká příručka k certifikaci ISTQB Foundation Level — šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. K němu jsem napsal kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl: ověřuje šest invariantů, z nichž hlavní je, že počet slov na stránce přesně odpovídá zdroji.
+              <p data-cs="Česká příručka k certifikaci ISTQB Foundation Level. Šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. Napsal jsem k němu kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl. Ověřuje šest invariantů a hlavní z nich je, že počet slov na stránce přesně odpovídá zdroji."
+                 data-en="A Czech study guide for the ISTQB Foundation Level certification. Six chapters in three variants, over 87,000 words and 887 questions. The content is written in Word and a custom Python generator builds the site from it. I wrote a verification suite for it, because at that scale you cannot spot a lost section by eye. It checks six invariants and the main one is that the word count on each page exactly matches the source.">
+                Česká příručka k certifikaci ISTQB Foundation Level. Šest kapitol ve třech podobách, přes 87 000 slov a 887 otázek. Obsah vzniká ve Wordu a web z něj staví vlastní generátor v Pythonu. Napsal jsem k němu kontrolní sadu, protože u takového rozsahu pohledem nepoznáte, že se při převodu ztratil oddíl. Ověřuje šest invariantů a hlavní z nich je, že počet slov na stránce přesně odpovídá zdroji.
               </p>
               <div class="project-tags">
                 <span class="tag">Python</span><span class="tag" data-cs="Generátor webu" data-en="Site generator">Generátor webu</span><span class="tag">ISTQB</span><span class="tag">GitHub Actions</span>
@@ -429,14 +416,11 @@
 
           <!-- Playwright E2E -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            </div>
             <div class="project-body">
               <h3 data-cs="E2E testy v Playwrightu" data-en="Playwright E2E tests">E2E testy v Playwrightu</h3>
-              <p data-cs="Scénář nad veřejným e-shopem v TypeScriptu. Netestuje jen proklikání: pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy — připomínky k lokátorům a konzistenci jsou zapracované a popsané v README."
-                 data-en="A TypeScript scenario over a public e-shop. It does not just click through: for three products it stores the name, code and price from the detail page, adds them to the basket and then verifies that every basket row and the total match the stored values. The project went through code review by a more senior colleague — the comments on locators and consistency are addressed and described in the README.">
-                Scénář nad veřejným e-shopem v TypeScriptu. Netestuje jen proklikání: pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy — připomínky k lokátorům a konzistenci jsou zapracované a popsané v README.
+              <p data-cs="Scénář nad veřejným e-shopem v TypeScriptu. Pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy. Připomínky k lokátorům a konzistenci jsou zapracované a popsané v README."
+                 data-en="A TypeScript scenario over a public e-shop. For three products it stores the name, code and price from the detail page, adds them to the basket and then verifies that every basket row and the total match the stored values. The project went through code review by a more senior colleague. The comments on locators and consistency are addressed and described in the README.">
+                Scénář nad veřejným e-shopem v TypeScriptu. Pro tři produkty si uloží název, kód a cenu z detailu, přidá je do košíku a pak ověří, že každý řádek košíku i celková cena odpovídají uloženým hodnotám. Projekt prošel code review od seniornějšího kolegy. Připomínky k lokátorům a konzistenci jsou zapracované a popsané v README.
               </p>
               <div class="project-tags">
                 <span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E</span><span class="tag" data-cs="Code review" data-en="Code review">Code review</span>
@@ -452,14 +436,11 @@
 
           <!-- Evidence studentů -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
             <div class="project-body">
               <h3 data-cs="Evidence studentů" data-en="Student records manager">Evidence studentů</h3>
-              <p data-cs="Konzolová aplikace v Pythonu pro správu studentů — oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak."
-                 data-en="A Python console application for managing student records — a separate entity, collection management, validation and a menu. My first larger program, written entirely by hand without AI. The README also has a section on what I would do differently today.">
-                Konzolová aplikace v Pythonu pro správu studentů — oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak.
+              <p data-cs="Konzolová aplikace v Pythonu pro správu studentů. Oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak."
+                 data-en="A Python console application for managing student records. A separate entity, collection management, validation and a menu. My first larger program, written entirely by hand without AI. The README also has a section on what I would do differently today.">
+                Konzolová aplikace v Pythonu pro správu studentů. Oddělená entita, správa kolekce, validace a menu. Můj první větší program, psaný celý ručně bez AI. V README je i sekce o tom, co bych dnes udělal jinak.
               </p>
               <div class="project-tags">
                 <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">JSON</span>
@@ -475,15 +456,12 @@
 
           <!-- Svatební weby -->
           <article class="project-card reveal">
-            <div class="project-thumb">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.2A4.8 4.8 0 0 0 17.2 4c-1.9 0-3.6 1-5.2 3C10.4 5 8.7 4 6.8 4A4.8 4.8 0 0 0 2 8.8c0 2 1.5 3.7 3 5.2l7 7z"/></svg>
-              <span class="thumb-badge" data-cs="Připravuji" data-en="In progress">Připravuji</span>
-            </div>
             <div class="project-body">
+              <span class="project-badge" data-cs="Připravuji" data-en="In progress">Připravuji</span>
               <h3 data-cs="Svatební weby" data-en="Wedding websites">Svatební weby</h3>
-              <p data-cs="Weby na míru pro svatební den — pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. První z nich právě stavím: web pro vlastní svatbu."
-                 data-en="Custom websites for the big day — invitation, guest info, schedule, RSVP form and photo gallery in one place. Trilingual, with a gallery ordered by the time each photo was taken. I am building the first one right now: the website for my own wedding.">
-                Weby na míru pro svatební den — pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. První z nich právě stavím: web pro vlastní svatbu.
+              <p data-cs="Weby na míru pro svatební den. Pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. Právě stavím první z nich, web pro vlastní svatbu."
+                 data-en="Custom websites for the big day. Invitation, guest info, schedule, RSVP form and photo gallery in one place. Trilingual, with a gallery ordered by the time each photo was taken. I am building the first one right now, the website for my own wedding.">
+                Weby na míru pro svatební den. Pozvánka, informace pro hosty, program, RSVP formulář a fotogalerie na jednom místě. Trojjazyčné, s galerií řazenou podle času pořízení snímku. Právě stavím první z nich, web pro vlastní svatbu.
               </p>
               <div class="project-tags">
                 <span class="tag">HTML / CSS / JS</span><span class="tag" data-cs="Lokalizace" data-en="Localisation">Lokalizace</span><span class="tag">RSVP</span>
@@ -505,9 +483,9 @@
         <p class="section-label">ping me</p>
         <h2 class="section-title reveal" data-cs="Kontakt" data-en="Contact">Kontakt</h2>
         <p class="section-desc reveal"
-           data-cs="Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se — odpovídám rychle."
-           data-en="Got an offer, a question or an idea for collaboration? Reach out — I reply fast.">
-          Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se — odpovídám rychle.
+           data-cs="Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se, odpovídám rychle."
+           data-en="Got an offer, a question or an idea for collaboration? Reach out, I reply fast.">
+          Máš nabídku, dotaz nebo nápad na spolupráci? Ozvi se, odpovídám rychle.
         </p>
 
         <div class="contact-wrap">
@@ -578,7 +556,7 @@
   <footer>
     <div class="container">
       <span>© <span id="year">2026</span> Jan Černý</span>
-      <span class="mono" data-cs="~ vyrobeno s kávou a zvědavostí ~" data-en="~ built with coffee and curiosity ~">~ vyrobeno s kávou a zvědavostí ~</span>
+      <span class="mono" data-cs="~ vyrobeno s čajem a zvědavostí ~" data-en="~ built with tea and curiosity ~">~ vyrobeno s čajem a zvědavostí ~</span>
     </div>
   </footer>
 

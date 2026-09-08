@@ -293,7 +293,6 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   animation: blikani 1.05s step-end infinite;
 }
 @keyframes blikani { 0%, 45% { opacity: 1; } 50%, 100% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
 
 /* Terminálové okno */
@@ -716,7 +715,20 @@ footer .mono { font-family: var(--font-mono); font-size: 12.5px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  /* animation-iteration-count je tu povinné. Samotné zkrácení doby na .01 ms
+     nekonečnou animaci nezastaví — rozjede ji na 100 000 cyklů za sekundu,
+     takže místo zklidnění začne prvek zběsile blikat. Přesně to se dělo
+     kurzoru u loga a kurzoru v kontaktním terminálu. */
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  /* Kurzory se nezastaví někde uprostřed cyklu, ale zůstanou svítit. */
+  .logo .cursor, .caret, .terminal-body .caret {
+    animation: none !important;
+    opacity: 1 !important;
+  }
   .reveal { opacity: 1; transform: none; }
 }
 

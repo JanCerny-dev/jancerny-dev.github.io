@@ -554,7 +554,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  /* Nahoře titulek s křížkem, dole odkaz na PDF a pás miniatur.
+     Bez tohoto odsazení se obrázek vystředil přes ně. */
+  padding: 68px 32px 160px;
   background: rgba(4, 8, 12, .88);
   backdrop-filter: blur(6px);
 }
@@ -582,8 +584,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 .lightbox-stage {
   display: flex; align-items: center; justify-content: center;
-  width: min(94vw, 1180px);
+  /* 176 = 2 × (20 odsazení + 44 tlačítko + 24 mezera). Šipky tak nikdy
+     nezasahují do obrázku, ani když je široký. */
+  width: min(100vw - 176px, 1180px);
   height: min(70vh, 760px);
+  max-height: 100%;   /* na nízkém okně se plocha smrskne, místo aby přetekla */
 }
 /* contain, protoze certifikaty maji ruzne pomery stran —
    na vysku i na sirku. Pevna vyska by u poloviny nechala prazdno. */
@@ -625,6 +630,22 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .lightbox-nav svg { width: 20px; height: 20px; }
 .lightbox-prev { left: 20px; }
 .lightbox-next { right: 20px; }
+/* Zavírací křížek neměl žádné umístění, takže ho flex vysadil vlevo od fotky,
+   rovnou na šipku doleva. Patří do pravého horního rohu. Odsazení .lightbox-count
+   na right: 76px s ním počítá: 16 + 44 + 16. */
+.lightbox-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  background: rgba(235, 219, 178, .10);
+  border: 1px solid rgba(235, 219, 178, .18);
+  border-radius: var(--radius);
+  color: #ebdbb2;
+  transition: background var(--t);
+  z-index: 2;
+}
+.lightbox-close:hover { background: rgba(235, 219, 178, .22); }
+.lightbox-close svg { width: 20px; height: 20px; }
 .lightbox-thumbs {
   position: absolute; bottom: 20px;
   display: flex; gap: 8px;
@@ -648,10 +669,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .lightbox-thumbs img.aktivni { opacity: 1; border-color: var(--accent); }
 @media (max-width: 640px) {
   .lightbox-thumbs { display: none; }
-  .lightbox-open { bottom: 24px; }
-  .lightbox-stage { height: min(64vh, 620px); }
+  /* Vedle obrázku se šipky na telefonu nevejdou, aniž by ho zúžily zhruba
+     na dvě třetiny. Sjedou proto pod něj a obrázek si vezme celou šířku. */
+  .lightbox { padding: 68px 12px 96px; }
+  .lightbox-stage { width: calc(100vw - 24px); height: min(62vh, 620px); }
+  .lightbox-nav { top: auto; bottom: 18px; transform: none; }
+  .lightbox-prev { left: calc(50% - 58px); }
+  .lightbox-next { right: calc(50% - 58px); }
+  .lightbox-open { bottom: 76px; }
+  .lightbox-close { top: 12px; right: 12px; }
+  .lightbox-title { top: 22px; left: 16px; max-width: calc(100% - 160px); }
+  .lightbox-count { top: 22px; right: 68px; }
 }
-.lightbox-close svg { width: 20px; height: 20px; }
 
 /* ══════════════════ KONTAKT ══════════════════ */
 .contact-wrap {

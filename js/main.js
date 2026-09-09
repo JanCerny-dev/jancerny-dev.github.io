@@ -91,16 +91,28 @@ langToggle.addEventListener('click', spustPsani);
 /* ══════════ MOBILNÍ MENU ══════════ */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
+
+function zavriMenu() {
+  navLinks.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+}
+
 hamburger.addEventListener('click', () => {
   const open = navLinks.classList.toggle('open');
   hamburger.setAttribute('aria-expanded', open);
 });
-navLinks.querySelectorAll('a').forEach(a =>
-  a.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-  })
-);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', zavriMenu));
+
+/* Kliknutí nebo klepnutí mimo menu ho zavře. Vlastní hamburger se přeskakuje,
+   jinak by si otevření hned zase zrušil, když událost probublá až sem. */
+document.addEventListener('click', e => {
+  if (!navLinks.classList.contains('open')) return;
+  if (e.target.closest && e.target.closest('#navLinks, #hamburger')) return;
+  zavriMenu();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) zavriMenu();
+});
 
 /* ══════════ AKTIVNÍ ODKAZ V MENU ══════════ */
 const sections = document.querySelectorAll('main section[id]');
@@ -220,6 +232,36 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightb
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
 });
+
+/* ══════════ POSUN PRSTEM V GALERII ══════════ */
+/* Jen na dotykových zařízeních. Tlačítka zůstávají, tohle je jen zkratka:
+   doleva a doprava listuje, nahoru nebo dolů zavírá. */
+if (window.matchMedia('(pointer: coarse)').matches) {
+  const PRAH = 45;              /* kratší pohyb je klepnutí, ne gesto */
+  let zacX = 0, zacY = 0, zrusit = true;
+
+  lightbox.addEventListener('touchstart', e => {
+    /* Gesto začaté na tlačítku nechává klepnutí na pokoji. */
+    zrusit = e.touches.length > 1 || !!e.target.closest('button, a');
+    if (zrusit) return;
+    zacX = e.touches[0].clientX;
+    zacY = e.touches[0].clientY;
+  }, { passive: true });
+
+  /* Druhý prst znamená přiblížení certifikátu. To patří prohlížeči, ne nám. */
+  lightbox.addEventListener('touchmove', e => {
+    if (e.touches.length > 1) zrusit = true;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', e => {
+    if (zrusit || !e.changedTouches.length) return;
+    const dx = e.changedTouches[0].clientX - zacX;
+    const dy = e.changedTouches[0].clientY - zacY;
+    if (Math.abs(dx) < PRAH && Math.abs(dy) < PRAH) return;
+    if (Math.abs(dx) > Math.abs(dy)) ukaz(aktualni + (dx < 0 ? 1 : -1));
+    else closeLightbox();
+  }, { passive: true });
+}
 
 /* ══════════ ROK VE FOOTERU ══════════ */
 document.getElementById('year').textContent = new Date().getFullYear();
